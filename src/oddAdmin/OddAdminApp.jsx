@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import '../styles/App.css';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, NavLink, Route, Routes} from "react-router-dom";
 import {PageAccueil, PageConnexion, PageErreur, PageInterdit, PageNonAutorise} from "../pages";
-import {AppBar, Box, FormControlLabel, FormGroup, IconButton, Switch, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Drawer, FormControlLabel, FormGroup, IconButton, Switch, Toolbar, Typography} from "@mui/material";
 
 export const OddAdminApp = () => {
     const [auth, setAuth] = useState(true);
@@ -11,10 +11,38 @@ export const OddAdminApp = () => {
         setAuth(event.target.checked);
     };
 
+    const drawerWidth = 160;
+
+    const navLinkDrawer = (
+        <div>
+            <ul>
+                <li>
+                    <NavLink activeclassname={"active"} to="/" style={{cursor: 'pointer'}}><i
+                        className="fas fa-house"/>Home</NavLink>
+                </li>
+                <li>
+                    <NavLink activeclassname={"active"} to="/error" style={{cursor: 'pointer'}}><i
+                        className="fas fa-bug"/>Erreur</NavLink>
+                </li>
+            </ul>
+        </div>
+    )
+
     return (
         <BrowserRouter>
             <div className="App">
-                <Box sx={{flexGrow: 1}}>
+                <Box component="nav">
+                    <Drawer variant="permanent" sx={{
+                        display: {xs: 'none', sm: 'block'},
+                        '& .MuiDrawer-paper': {boxSizing: 'border-box', width: drawerWidth},
+                    }} open>
+                        {navLinkDrawer}
+                    </Drawer>
+                </Box>
+                <Box component="main" sx={{
+                    width: {sm: `calc(100% - ${drawerWidth}px)`},
+                    ml: {sm: `${drawerWidth}px`},
+                }}>
                     <FormGroup>
                         <FormControlLabel
                             control={
@@ -38,7 +66,7 @@ export const OddAdminApp = () => {
                             >
                             </IconButton>
                             <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                                ODDysée à La Rochelle
+                                ODDysée
                             </Typography>
                             {auth && (
                                 <div>
@@ -47,9 +75,7 @@ export const OddAdminApp = () => {
                                         aria-label="account of current user"
                                         aria-controls="menu-appbar"
                                         aria-haspopup="true"
-                                        color="inherit"
-                                    >
-                                    </IconButton>
+                                        color="inherit"/>
                                 </div>
                             )}
                         </Toolbar>
