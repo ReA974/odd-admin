@@ -38,7 +38,7 @@ export const OddAdminApp = () => {
                             >
                             </IconButton>
                             <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                                Photos
+                                ODDysée à La Rochelle
                             </Typography>
                             {auth && (
                                 <div>
