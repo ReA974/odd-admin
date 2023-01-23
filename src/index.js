@@ -1,11 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import {render} from "react-dom";
 import './styles/index.css';
 import {OddAdminApp} from './oddAdmin';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-    <React.StrictMode>
-        <OddAdminApp/>
-    </React.StrictMode>
-);
+const root = document.getElementById("root");
+render(<OddAdminApp/>, root);
