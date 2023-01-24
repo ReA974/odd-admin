@@ -87,4 +87,16 @@ function Header(props) {
   );
 }
 
+export function HeaderAuth() {
+  return (
+    <AppBar>
+      <Toolbar>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          ODDyssée
+        </Typography>
+      </Toolbar>
+    </AppBar>
+  );
+}
+
 export default Header;
