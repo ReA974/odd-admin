@@ -7,6 +7,7 @@ import {
 } from '@firebase/firestore';
 import GroupCard from '../components/GroupCard';
 import { db } from '../services/firestore.service';
+import AddGroup from '../components/AddGroup';
 
 function GroupPage() {
   const [snapshot, setSnapshot] = useState(null);
@@ -37,14 +38,15 @@ function GroupPage() {
   return (
     <Box
       display="flex"
+      flexDirection="column"
       justifyContent="center"
-      sx={{
-        marginTop: '50px', flexGrow: 1,
-      }}
+      alignItems="center"
+      sx={{ marginTop: '50px' }}
     >
+      <AddGroup />
       { groups !== undefined && groups.length !== 0
         && (
-          <Grid container spacing={2} sx={{ width: '80vw', maxWidth: '1500px' }} display="flex" justifyContent="center">
+          <Grid container spacing={2} sx={{ width: '80vw', maxWidth: '1500px', paddingTop: '40px' }} display="flex" justifyContent="center">
             {
               groups.map((group) => (
                 <Grid key={group.id} item xs={6} sx={{ width: '35vw', minWidth: '300px' }}>
