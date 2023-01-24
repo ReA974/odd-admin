@@ -31,8 +31,8 @@ function GroupPage() {
         <Grid container spacing={2} sx={{ width: '80vw', maxWidth: '1500px' }} display="flex" justifyContent="center">
           {
             groups.map((group) => (
-              <Grid key={group} item xs={6} sx={{ width: '35vw', minWidth: '300px' }}>
-                <GroupCard name={group.name} />
+              <Grid key={group.id} item xs={6} sx={{ width: '35vw', minWidth: '300px' }}>
+                <GroupCard id={group.id} name={group.name} />
               </Grid>
             ))
           }

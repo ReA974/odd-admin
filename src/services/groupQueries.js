@@ -1,13 +1,9 @@
 import {
-  getDocs, collection,
+  getDocs, collection, deleteDoc, doc,
 } from '@firebase/firestore';
 import { db } from './firestore.service';
 
 const getGroups = async () => {
-  // const user = auth.currentUser;
-  // if (!user) {
-  //   return [false, 'No user connected'];
-  // }
   const groups = [];
 
   try {
@@ -25,6 +21,16 @@ const getGroups = async () => {
   }
 
   return [true, groups];
+};
+
+export const deleteGroup = async (id) => {
+  try {
+    await deleteDoc(doc(db, 'GROUP', id));
+  } catch (error) {
+    console.log(`Error while deleting group: ${error}`);
+    return false;
+  }
+  return true;
 };
 
 export default getGroups;
