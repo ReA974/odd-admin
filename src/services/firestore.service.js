@@ -10,7 +10,7 @@ const firebaseConfig = {
   storageBucket: 'projet-odd.appspot.com',
   messagingSenderId: '559952560648',
   appId: '1:559952560648:web:8079805fa1b2f92338c7bd',
-  measurementId: 'G-BTE3HQKNR9'
+  measurementId: 'G-BTE3HQKNR9',
 };
 
 const app = initializeApp(firebaseConfig);
