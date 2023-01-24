@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Typography, Box, IconButton, Dialog, DialogTitle,
   DialogActions, Button,
 } from '@mui/material';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import deleteGroup from '../services/groupQueries';
+import { deleteGroup } from '../services/groupQueries';
 
 function GroupCard({ id, name }) {
-  const [openDialog, setOpenDialog] = React.useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleClickOpen = () => {
     setOpenDialog(true);
