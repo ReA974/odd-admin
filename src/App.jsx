@@ -1,20 +1,25 @@
 import React from 'react';
+import {
+  BrowserRouter, Routes, Route, Navigate,
+} from 'react-router-dom';
+import { Box } from '@mui/material';
+import PoiPage from './pages/PoiPage';
+import GroupPage from './pages/GroupPage';
+import Header from './components/Header';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Header />
+      <Box sx={{ paddingTop: '64px' }}>
+        <Routes>
+          <Route path="/group" element={<GroupPage />} exact />
+          <Route path="/poi" element={<PoiPage />} />
+          <Route path="*" element={<Navigate replace to="/poi" />} />
+        </Routes>
+      </Box>
+    </BrowserRouter>
   );
 }
 
