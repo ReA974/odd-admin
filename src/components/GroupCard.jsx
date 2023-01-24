@@ -5,7 +5,7 @@ import {
   DialogActions, Button,
 } from '@mui/material';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { deleteGroup } from '../services/groupQueries';
+import deleteGroup from '../services/groupQueries';
 
 function GroupCard({ id, name }) {
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -19,8 +19,8 @@ function GroupCard({ id, name }) {
   };
 
   const handleDelete = () => {
-    deleteGroup(id);
     handleClose();
+    deleteGroup(id);
   };
 
   return (
@@ -40,7 +40,6 @@ function GroupCard({ id, name }) {
         open={openDialog}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
           {`Voulez-vous vraiment supprimer le groupe "${name}" ?`}
