@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Card, CardContent } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 
 function GroupCard({ name }) {
   return (
-    <Card sx={{ maxWidth: 750 }}>
-      <CardContent>
-        <Typography>{name}</Typography>
-      </CardContent>
-    </Card>
+    <Box
+      display="flex"
+      sx={{
+        border: '1px solid lightGray', padding: '10px 20px', borderRadius: '4px',
+      }}
+    >
+      <Typography variant="h6">{name}</Typography>
+    </Box>
   );
 }
 
