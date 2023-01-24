@@ -3,10 +3,11 @@ import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
 import { Box } from '@mui/material';
-import PoiPage from './pages/PoiPage';
-import GroupPage from './pages/GroupPage';
 import Header from './components/Header';
 import './App.css';
+import AddPoiPage from './pages/AddPoiPage';
+import GroupPage from './pages/GroupPage';
+import PoiPage from './pages/PoiPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/group" element={<GroupPage />} exact />
           <Route path="/poi" element={<PoiPage />} />
+          <Route path="/addPoi" element={<AddPoiPage />} />
           <Route path="*" element={<Navigate replace to="/poi" />} />
         </Routes>
       </Box>

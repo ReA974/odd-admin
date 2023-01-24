@@ -4,7 +4,6 @@ import {
   Box, Divider, List, ListItem, ListItemButton, Button,
   ListItemText, CssBaseline, AppBar, Toolbar, IconButton, Drawer, Typography,
 } from '@mui/material';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import MenuIcon from '@mui/icons-material/Menu';
 
 const drawerWidth = 240;
