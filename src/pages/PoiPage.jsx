@@ -39,7 +39,6 @@ function PoiPage() {
             {
               Object.keys(POIListData).map((key) => (
                 <Grid key={key} item xs={6} sx={{ width: '35vw', minWidth: '300px' }}>
-                  {console.log(POIListData[key])}
                   <PoiCard id={key} data={POIListData[key]} />
                 </Grid>
               ))

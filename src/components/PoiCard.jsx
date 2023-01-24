@@ -15,7 +15,6 @@ function PoiCard({ id, data }) {
         <Stack direction="row" spacing={2}>
           <Typography variant="body2">{`ID : ${id}`}</Typography>
           <Typography variant="body2">{`Description : ${data.description}`}</Typography>
-          <Typography variant="body2">{JSON.stringify(data.coordinates, null, 2)}</Typography>
         </Stack>
       </Stack>
     </Box>
