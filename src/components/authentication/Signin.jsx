@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
 import {
   Typography, Box, TextField, FormControlLabel, Checkbox,
-  CircularProgress, Button,
+  CircularProgress, Button, Link,
 } from '@mui/material';
+import { Link as LinkRouter } from 'react-router-dom';
 import { logInWithEmailAndPassword } from '../../services/authentication.service';
 
 function Signin() {
@@ -107,16 +108,19 @@ function Signin() {
           onChange={(event) => onChangeHandler(event, 'password')}
           inputRef={passwordRef}
         />
-        <FormControlLabel
-          sx={{ margin: '10px 0' }}
-          control={<Checkbox checked={remainMe} onChange={(event) => onChangeHandler(event, 'remain')} />}
-          label="Se souvenir de moi"
-        />
+        <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ width: '80%' }}>
+          <FormControlLabel
+            control={<Checkbox checked={remainMe} onChange={(event) => onChangeHandler(event, 'remain')} />}
+            label="Se souvenir de moi"
+          />
+          <Link component={LinkRouter} to="/authentication/reset" underline="none" sx={{ marginTop: '-7px' }}>Mot de passe oublié ?</Link>
+        </Box>
         {error !== null
         && <Typography color="error">{error}</Typography>}
         <Button
           variant="contained"
           onClick={(event) => onClickSignin(event)}
+          sx={{ margin: '10px 0', padding: '10px 0', width: '80%' }}
         >
           {isLoading ? <CircularProgress /> : 'Connexion'}
         </Button>

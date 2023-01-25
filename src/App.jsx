@@ -7,6 +7,7 @@ import PoiPage from './pages/PoiPage';
 import GroupPage from './pages/GroupPage';
 import Header, { HeaderAuth } from './components/Header';
 import Signin from './components/authentication/Signin';
+import ResetPassword from './components/authentication/ResetPassword';
 import { DisconnectedRoute, PrivateRoute } from './components/Routes';
 import './App.css';
 
@@ -25,6 +26,7 @@ function App() {
             )}
           >
             <Route exact path="/authentication/signin" element={<Signin />} />
+            <Route exact path="/authentication/reset" element={<ResetPassword />} />
           </Route>
           <Route
             path="/"
