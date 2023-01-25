@@ -4,16 +4,12 @@ import {
   FormControl, InputLabel, MenuItem, Select,
 } from '@mui/material';
 
-function SelectProps({
+function SelectStringProps({
   label, dataSelectable, valueComponent, setValueComponent, multiple, width,
 }) {
   const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setValueComponent(
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    const { target: { value } } = event;
+    setValueComponent(value);
   };
 
   return (
@@ -28,29 +24,28 @@ function SelectProps({
         onChange={handleChange}
       >
         {Object.keys(dataSelectable).map((data) => (
-          <MenuItem key={`${label}-select-${data}`} value={data}>{dataSelectable[data].name}</MenuItem>
+          <MenuItem key={`${label}-select-${data}`} value={dataSelectable[data].name}>{dataSelectable[data].name}</MenuItem>
         ))}
       </Select>
     </FormControl>
   );
 }
 
-SelectProps.propTypes = {
+SelectStringProps.propTypes = {
   label: PropTypes.string.isRequired,
   dataSelectable: PropTypes.shape({
     name: PropTypes.string,
-    description: PropTypes.string,
   }).isRequired,
-  valueComponent: PropTypes.instanceOf(Object),
+  valueComponent: PropTypes.string,
   setValueComponent: PropTypes.func.isRequired,
   multiple: PropTypes.bool,
   width: PropTypes.string,
 };
 
-SelectProps.defaultProps = {
-  valueComponent: null,
+SelectStringProps.defaultProps = {
+  valueComponent: '',
   multiple: false,
   width: '200px',
 };
 
-export default SelectProps;
+export default SelectStringProps;

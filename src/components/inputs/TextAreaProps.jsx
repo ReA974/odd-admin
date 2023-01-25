@@ -3,7 +3,7 @@ import { TextareaAutosize } from '@mui/material';
 import PropTypes from 'prop-types';
 
 function TextAreaProps({
-  ariaLabel, placeholder, minRows, value, width,
+  ariaLabel, placeholder, minRows, value, width, setValueComponent,
 }) {
   return (
     <TextareaAutosize
@@ -12,6 +12,7 @@ function TextAreaProps({
       value={value}
       placeholder={placeholder}
       style={{ width: { width } }}
+      onChange={(event) => setValueComponent(event.target.value)}
     />
   );
 }
@@ -22,6 +23,7 @@ TextAreaProps.propTypes = {
   minRows: PropTypes.number,
   value: PropTypes.string,
   width: PropTypes.string,
+  setValueComponent: PropTypes.func.isRequired,
 };
 
 TextAreaProps.defaultProps = {
