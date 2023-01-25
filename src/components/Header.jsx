@@ -4,8 +4,8 @@ import {
   Box, Divider, List, ListItem, ListItemButton, Button,
   ListItemText, CssBaseline, AppBar, Toolbar, IconButton, Drawer, Typography,
 } from '@mui/material';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import MenuIcon from '@mui/icons-material/Menu';
+import LogOutButton from './authentication/LogOutButton';
 
 const drawerWidth = 240;
 
@@ -43,7 +43,7 @@ function Header(props) {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar component="nav">
-        <Toolbar>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -53,17 +53,20 @@ function Header(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            ODDyssée
-          </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: '40px' }}>
-            <Button sx={{ color: '#fff' }} component={Link} to="/poi">Point d&apos;intérêts</Button>
-            <Button sx={{ color: '#fff' }} component={Link} to="/group">Groupes</Button>
+          <Box display="flex" flexDirection="row" alignItems="center">
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ display: { xs: 'none', sm: 'block' } }}
+            >
+              ODDyssée
+            </Typography>
+            <Box sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: '40px' }}>
+              <Button sx={{ color: '#fff' }} component={Link} to="/poi">Point d&apos;intérêts</Button>
+              <Button sx={{ color: '#fff' }} component={Link} to="/group">Groupes</Button>
+            </Box>
           </Box>
+          <LogOutButton />
         </Toolbar>
       </AppBar>
       <Box component="nav">
@@ -90,8 +93,8 @@ function Header(props) {
 export function HeaderAuth() {
   return (
     <AppBar>
-      <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Typography variant="h5" component="div">
           ODDyssée
         </Typography>
       </Toolbar>
