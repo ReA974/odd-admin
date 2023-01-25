@@ -3,13 +3,15 @@ import { Box, Button, IconButton } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
 import TextFieldProps from '../components/inputs/TextFieldProps';
 import TextAreaProps from '../components/inputs/TextAreaProps';
-import SelectProps from '../components/inputs/SelectProps';
 import ButtonProps from '../components/inputs/ButtonProps';
+import AddChallengePage from './AddChallengePage';
+import SelectObjectProps from '../components/inputs/SelectObjectProps';
 
 function AddPoiPage() {
   const [name, setName] = useState();
   const [description, setDescription] = useState();
   const [oddLie, setOddLie] = useState([]);
+  const [displayAddChallenge, setDisplayAddChallenge] = useState(false);
 
   const oddSelectable = {
     1: {
@@ -70,7 +72,7 @@ function AddPoiPage() {
             value={description}
             setValueComponent={setDescription}
           />
-          <SelectProps
+          <SelectObjectProps
             dataSelectable={oddSelectable}
             setValueComponent={setOddLie}
             valueComponent={oddLie}
@@ -80,10 +82,14 @@ function AddPoiPage() {
         </Box>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-        <ButtonProps text="Ajouter un défi" variant="outlined" to="/addChallenge" component />
+        {
+          displayAddChallenge
+            ? <AddChallengePage />
+            : <Button variant="outlined" onClick={() => setDisplayAddChallenge(!displayAddChallenge)}>Ajouter un défi</Button>
+        }
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-        <ButtonProps text="Ajouter le POI" type="submit" to="/addChallenge" component />
+        <ButtonProps text="Ajouter le POI" type="submit" />
       </Box>
     </Box>
   );
