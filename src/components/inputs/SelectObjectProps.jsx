@@ -12,7 +12,7 @@ function SelectObjectProps({
       target: { value },
     } = event;
     setValueComponent(
-      typeof value === 'string' ? value.split(',') : value,
+      typeof value === 'number' ? value.split(',') : value,
     );
   };
 
@@ -28,7 +28,7 @@ function SelectObjectProps({
         onChange={handleChange}
       >
         {Object.keys(dataSelectable).map((data) => (
-          <MenuItem key={`${label}-select-${data}`} value={data}>{dataSelectable[data].name}</MenuItem>
+          <MenuItem key={`${label}-select-${data}`} value={Number(data)}>{dataSelectable[data].name}</MenuItem>
         ))}
       </Select>
     </FormControl>
