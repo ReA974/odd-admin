@@ -1,5 +1,5 @@
 import {
-  deleteDoc, doc, addDoc, serverTimestamp, collection,
+  deleteDoc, doc, setDoc, serverTimestamp,
 } from '@firebase/firestore';
 import { db } from './firestore.service';
 
@@ -15,7 +15,7 @@ export const deleteGroup = async (id) => {
 
 export const addGroup = async (name, phone) => {
   try {
-    await addDoc(collection(db, 'GROUP'), {
+    await setDoc(doc(db, 'GROUP', phone), {
       name,
       phone,
       created: serverTimestamp(),
