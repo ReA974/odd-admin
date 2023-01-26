@@ -42,7 +42,6 @@ function AddPoiPage() {
       setErrorLongitude(true);
       setErrorMessage('Veuillez renseigner la longitude du POI');
     } else if (!regex.test(latitude)) {
-      console.log(latitude);
       setErrorLatitude(true);
       setErrorMessage('Veuillez renseigner la latitude seulement avec des des chiffres et un point');
     } else if (!regex.test(longitude)) {
