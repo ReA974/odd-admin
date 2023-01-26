@@ -12,7 +12,6 @@ function AddChallengePage() {
   const [challengeType, setChallengeType] = useState();
   const [challengeAnswer, setChallengeAnswer] = useState();
 
-  console.log(challengeType);
   const challengeTypeSelectable = {
     1: {
       name: 'Photo',
