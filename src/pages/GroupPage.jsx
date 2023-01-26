@@ -5,9 +5,9 @@ import {
 import {
   query, collection, orderBy, onSnapshot,
 } from '@firebase/firestore';
-import GroupCard from '../components/GroupCard';
+import GroupCard from '../components/group/GroupCard';
 import { db } from '../services/firestore.service';
-import AddGroup from '../components/AddGroup';
+import AddGroup from '../components/group/AddGroup';
 
 function GroupPage() {
   const [snapshot, setSnapshot] = useState(null);

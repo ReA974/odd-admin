@@ -5,6 +5,7 @@ import {
 import { Box } from '@mui/material';
 import PoiPage from './pages/PoiPage';
 import GroupPage from './pages/GroupPage';
+import GroupDetailsPage from './pages/GroupDetailsPage';
 import Header, { HeaderAuth } from './components/Header';
 import Signin from './components/authentication/Signin';
 import ResetPassword from './components/authentication/ResetPassword';
@@ -37,6 +38,7 @@ function App() {
               </>
             )}
           >
+            <Route exact path="/group/:id" element={<GroupDetailsPage />} />
             <Route exact path="/group" element={<GroupPage />} />
             <Route exact path="/poi" element={<PoiPage />} />
           </Route>
