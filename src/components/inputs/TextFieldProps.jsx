@@ -3,7 +3,7 @@ import { TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 
 function TextFieldProps({
-  id, label, variant, type, helperText, required, value, setValueComponent, error, width,
+  id, label, variant, type, helperText, required, value, setValueComponent, error, width, maxLength,
 }) {
   return (
     required
@@ -15,9 +15,10 @@ function TextFieldProps({
           type={type}
           value={value}
           error={error}
-          sx={{ width: { width } }}
+          sx={{ width }}
           helperText={helperText}
           onChange={(event) => setValueComponent(event.target.value)}
+          inputProps={{ maxLength }}
           required
         />
       )
@@ -29,9 +30,10 @@ function TextFieldProps({
           type={type}
           value={value}
           error={error}
-          sx={{ width: { width } }}
+          sx={{ width }}
           helperText={helperText}
           onChange={(event) => setValueComponent(event.target.value)}
+          inputProps={{ maxLength }}
         />
       )
   );
@@ -48,6 +50,7 @@ TextFieldProps.propTypes = {
   setValueComponent: PropTypes.func.isRequired,
   error: PropTypes.bool,
   width: PropTypes.string,
+  maxLength: PropTypes.string,
 };
 
 TextFieldProps.defaultProps = {
@@ -59,6 +62,7 @@ TextFieldProps.defaultProps = {
   value: '',
   error: false,
   width: '100%',
+  maxLength: '',
 };
 
 export default TextFieldProps;

@@ -1,43 +1,54 @@
 import React, { useState } from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
-import { EditOutlined } from '@mui/icons-material';
+import {
+  Avatar, Box, Typography,
+} from '@mui/material';
 import PropTypes from 'prop-types';
+import ImageIcon from '@mui/icons-material/Image';
 
-function ImportImageFile({ picture, setImgFile }) {
+function ImportImageFile({ setImgFile }) {
   const [errorMessage, setErrorMessage] = useState('');
+  const [currentImg, setCurrentImg] = useState('');
 
   const handleChange = async (event) => {
     setErrorMessage('');
+    setCurrentImg(URL.createObjectURL(event.target?.files?.[0]));
     setImgFile(event.target?.files?.[0]);
   };
 
   return (
     <Box display="flex" justifyContent="center">
-      <Typography>Ajouter votre image</Typography>
-      <img alt="" src={picture} />
-      <IconButton onChange={handleChange} component="label">
-        <>
-          <EditOutlined />
-          <input
-            type="file"
-            accept="image/png, image/jpeg"
-            name="picture"
-            hidden
-          />
-        </>
-      </IconButton>
+      <label htmlFor="imgupload">
+        <Avatar
+          alt=""
+          src={currentImg}
+          variant="rounded"
+          sx={{
+            height: '30vw',
+            width: '35vw',
+            minWidth: '250px',
+            maxWidth: '600px',
+            maxHeight: '330px',
+            minHeight: '200px',
+          }}
+        >
+          <ImageIcon sx={{ width: 200, height: 'auto' }} />
+        </Avatar>
+        <input
+          onChange={handleChange}
+          type="file"
+          accept="image/png, image/jpeg"
+          name="picture"
+          id="imgupload"
+          hidden
+        />
+      </label>
       { errorMessage && <Typography>{errorMessage}</Typography> }
     </Box>
   );
 }
 
 ImportImageFile.propTypes = {
-  picture: PropTypes.string,
   setImgFile: PropTypes.func.isRequired,
-};
-
-ImportImageFile.defaultProps = {
-  picture: '',
 };
 
 export default ImportImageFile;

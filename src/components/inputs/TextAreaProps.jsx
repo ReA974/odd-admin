@@ -11,7 +11,9 @@ function TextAreaProps({
       minRows={minRows}
       value={value}
       placeholder={placeholder}
-      style={{ width: '100%', resize: 'vertical', minWidth: '250px' }}
+      style={{
+        width: '100%', resize: 'vertical', minWidth: '250px', marginTop: '7px', marginBottom: '7px',
+      }}
       onChange={(event) => setValueComponent(event.target.value)}
     />
   );

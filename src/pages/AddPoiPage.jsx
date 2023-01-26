@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Box,
-  Button,
+  Box, CircularProgress,
   Typography,
 } from '@mui/material';
 import { GeoPoint } from '@firebase/firestore';
@@ -9,9 +8,9 @@ import Compressor from 'compressorjs';
 import TextFieldProps from '../components/inputs/TextFieldProps';
 import TextAreaProps from '../components/inputs/TextAreaProps';
 import ButtonProps from '../components/inputs/ButtonProps';
-import AddChallengePage from './AddChallengePage';
 import SelectObjectProps from '../components/inputs/SelectObjectProps';
 import { addPoi, setPoiPicture } from '../services/POIQueries';
+import getAllODD from '../services/ODDQueries';
 import ImportImageFile from '../components/inputs/ImportImageFile';
 
 function AddPoiPage() {
@@ -26,7 +25,19 @@ function AddPoiPage() {
   const [errorLatitude, setErrorLatitude] = useState(false);
   const [errorLongitude, setErrorLongitude] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [displayAddChallenge, setDisplayAddChallenge] = useState(false);
+  const [ODDListData, setODDListData] = useState(undefined);
+
+  useEffect(() => {
+    async function fetchData() {
+      const fetchedData = await getAllODD();
+      if (fetchedData !== null) {
+        setODDListData(fetchedData);
+      } else {
+        setODDListData(null);
+      }
+    }
+    fetchData();
+  }, []);
 
   const saveImg = (poiId) => {
     // eslint-disable-next-line no-new
@@ -60,10 +71,10 @@ function AddPoiPage() {
       setErrorMessage('Veuillez renseigner la longitude du POI');
     } else if (!regex.test(latitude)) {
       setErrorLatitude(true);
-      setErrorMessage('Veuillez renseigner la latitude seulement avec des des chiffres et un point');
+      setErrorMessage('Veuillez renseigner la latitude seulement avec des chiffres et un point');
     } else if (!regex.test(longitude)) {
       setErrorLongitude(true);
-      setErrorMessage('Veuillez renseigner la longitude seulement avec des des chiffres et une virgule');
+      setErrorMessage('Veuillez renseigner la longitude seulement avec des chiffres et une virgule');
     } else {
       const geoPoint = new GeoPoint(Number(latitude), Number(longitude));
       const result = await addPoi(name, description, linkedOdd, geoPoint);
@@ -75,16 +86,11 @@ function AddPoiPage() {
     }
   };
 
-  const oddSelectable = {
-    1: {
-      name: 'odd1',
-      description: 'je suis l\'odd1',
-    },
-    2: {
-      name: 'odd2',
-      description: 'je suis l\'odd2',
-    },
-  };
+  if (ODDListData === undefined) {
+    return (
+      <CircularProgress />
+    );
+  }
 
   return (
     <Box>
@@ -104,6 +110,8 @@ function AddPoiPage() {
       >
         <Box sx={{
           minWidth: '200px',
+          marginRight: '50px',
+          marginLeft: '50px',
         }}
         >
           <ImportImageFile
@@ -132,6 +140,7 @@ function AddPoiPage() {
             required
             value={name}
             error={errorName}
+            maxLength="40"
             setValueComponent={setName}
           />
           <TextAreaProps
@@ -141,7 +150,7 @@ function AddPoiPage() {
             setValueComponent={setDescription}
           />
           <SelectObjectProps
-            dataSelectable={oddSelectable}
+            dataSelectable={ODDListData}
             setValueComponent={setLinkedOdd}
             valueComponent={linkedOdd}
             label="ODD liés"
@@ -165,14 +174,10 @@ function AddPoiPage() {
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
         {
-          displayAddChallenge
-            ? <AddChallengePage />
-            : <Button variant="outlined" onClick={() => setDisplayAddChallenge(!displayAddChallenge)}>Ajouter un défi</Button>
+          errorMessage !== '' && <Typography color="error">{errorMessage}</Typography>
         }
       </Box>
-      {
-        errorMessage !== '' && <Typography color="error">{errorMessage}</Typography>
-      }
+
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
         <ButtonProps text="Ajouter le POI" type="submit" onClick={handleAddPoi} />
       </Box>
