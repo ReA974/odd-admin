@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
-  IconButton,
   Typography,
 } from '@mui/material';
 import { GeoPoint } from '@firebase/firestore';
-import { PhotoCamera } from '@mui/icons-material';
+import Compressor from 'compressorjs';
 import TextFieldProps from '../components/inputs/TextFieldProps';
 import TextAreaProps from '../components/inputs/TextAreaProps';
 import ButtonProps from '../components/inputs/ButtonProps';
 import AddChallengePage from './AddChallengePage';
 import SelectObjectProps from '../components/inputs/SelectObjectProps';
-import { addPoi } from '../services/POIQueries';
+import { addPoi, setPoiPicture } from '../services/POIQueries';
+import ImportImageFile from '../components/inputs/ImportImageFile';
 
 function AddPoiPage() {
   const [name, setName] = useState();
@@ -20,13 +20,30 @@ function AddPoiPage() {
   const [linkedOdd, setLinkedOdd] = useState([]);
   const [latitude, setLatitude] = useState();
   const [longitude, setLongitude] = useState();
+  const [picture, setPicture] = useState('');
+  const [imgFile, setImgFile] = useState('');
   const [errorName, setErrorName] = useState(false);
   const [errorLatitude, setErrorLatitude] = useState(false);
   const [errorLongitude, setErrorLongitude] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [displayAddChallenge, setDisplayAddChallenge] = useState(false);
 
-  const handleAddPoi = () => {
+  const saveImg = (poiId) => {
+    // eslint-disable-next-line no-new
+    new Compressor(imgFile, {
+      quality: 0.6,
+      success: async (compressedResult) => {
+        const response = await setPoiPicture(poiId, compressedResult);
+        if (response[0]) {
+          setPicture(URL.createObjectURL(compressedResult));
+        } else {
+          setErrorMessage('Une erreur est survenue, réessayez');
+        }
+      },
+    });
+  };
+
+  const handleAddPoi = async () => {
     const regex = /^(-?[1-8]?\d(?:\.\d{1,18})?|90(?:\.0{1,18})?)$/;
     if (name === '') {
       setErrorName(true);
@@ -49,7 +66,8 @@ function AddPoiPage() {
       setErrorMessage('Veuillez renseigner la longitude seulement avec des des chiffres et une virgule');
     } else {
       const geoPoint = new GeoPoint(Number(latitude), Number(longitude));
-      addPoi(name, description, linkedOdd, geoPoint);
+      const result = await addPoi(name, description, linkedOdd, geoPoint);
+      saveImg(result.id);
       setErrorLongitude(false);
       setErrorLatitude(false);
       setErrorName(false);
@@ -72,6 +90,7 @@ function AddPoiPage() {
     <Box>
       <Box
         component="form"
+        flexWrap="wrap"
         sx={{
           marginTop: '20px',
           display: 'flex',
@@ -83,15 +102,14 @@ function AddPoiPage() {
         noValidate
         autoComplete="off"
       >
-        <Box>
-          <Button variant="contained" component="label">
-            Upload
-            <input hidden accept="image/*" multiple type="file" />
-          </Button>
-          <IconButton color="primary" aria-label="upload picture" component="label">
-            <input hidden accept="image/*" type="file" />
-            <PhotoCamera />
-          </IconButton>
+        <Box sx={{
+          minWidth: '200px',
+        }}
+        >
+          <ImportImageFile
+            picture={picture}
+            setImgFile={(file) => setImgFile(file)}
+          />
         </Box>
         <Box
           component="form"
@@ -99,7 +117,12 @@ function AddPoiPage() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
+            width: '35vw',
+            minWidth: '250px',
+            maxWidth: '600px',
+            '& .MuiTextField-root': {
+              m: 1, width: '35vw', minWidth: '250px', maxWidth: '600px',
+            },
           }}
           noValidate
           autoComplete="off"

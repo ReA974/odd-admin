@@ -50,7 +50,7 @@ SelectObjectProps.propTypes = {
 SelectObjectProps.defaultProps = {
   valueComponent: null,
   multiple: false,
-  width: '200px',
+  width: '100%',
 };
 
 export default SelectObjectProps;

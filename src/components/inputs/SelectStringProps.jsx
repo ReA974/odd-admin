@@ -45,7 +45,7 @@ SelectStringProps.propTypes = {
 SelectStringProps.defaultProps = {
   valueComponent: '',
   multiple: false,
-  width: '200px',
+  width: '100%',
 };
 
 export default SelectStringProps;
