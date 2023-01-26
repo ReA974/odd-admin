@@ -23,7 +23,7 @@ function PoiCard({ id, data }) {
 
 PoiCard.propTypes = {
   id: PropTypes.string.isRequired,
-  data: PropTypes.node.isRequired,
+  data: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default PoiCard;
