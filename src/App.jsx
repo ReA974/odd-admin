@@ -12,6 +12,7 @@ import { DisconnectedRoute, PrivateRoute } from './components/Routes';
 import './App.css';
 import AddPoiPage from './pages/AddPoiPage';
 import PoiPage from './pages/PoiPage';
+import PoiDetailsPage from './pages/PoiDetailsPage';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
             <Route exact path="/poi" element={<PoiPage />} />
             <Route exact path="/addPoi" element={<AddPoiPage />} />
             <Route path="/" element={<Navigate replace to="/poi" />} />
+            <Route exact path="/poi/:id" element={<PoiDetailsPage />} />
           </Route>
         </Routes>
       </Box>
