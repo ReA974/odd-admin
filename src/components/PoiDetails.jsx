@@ -5,22 +5,22 @@ import {
 } from 'react-leaflet';
 import { Box } from '@mui/system';
 import {
-  Button, ButtonGroup, Divider, Grid, Stack, Typography,
+  Button, ButtonGroup, CircularProgress, Divider, Grid, Stack, Typography,
 } from '@mui/material';
 import { DeleteOutline, EditOutlined } from '@mui/icons-material';
 
 function PoiDetails({ id, data }) {
-  console.log(data);
+  console.log(id);
   return (
     <Box
       sx={{
-        margin: '25px', marginTop: '50px', flexGrow: 1,
+        marginTop: '50px', flexGrow: 1, width: '100%', justifyContent: 'center',
       }}
     >
       {data
       && (
-        <Grid container spacing={2} sx={{ width: '80vw', maxWidth: '1500px' }}>
-          <Grid key={id} item xs={5} sx={{ width: '35vw', minWidth: '300px' }}>
+        <Box display="flex" flexDirection="row" justifyContent="center" sx={{ width: '100vw' }}>
+          <Box sx={{ width: '40%' }}>
             <Stack
               justifyContent="center"
               alignItems="center"
@@ -39,11 +39,10 @@ function PoiDetails({ id, data }) {
                 </Button>
               </ButtonGroup>
             </Stack>
-          </Grid>
-          <Divider orientation="vertical" variant="middle" flexItem />
-          <Grid key={id} item xs={7} sx={{ width: '35vw', minWidth: '300px' }}>
+          </Box>
+          <Divider orientation="vertical" variant="middle" flexItem sx={{ margin: '25px' }} />
+          <Box sx={{ width: '40%' }}>
             <Stack
-              justifyContent="center"
               alignItems="center"
             >
               <Typography variant="h6">Localisation GPS</Typography>
@@ -64,25 +63,44 @@ function PoiDetails({ id, data }) {
               </MapContainer>
               {data.question
               && (
-              <Stack style={{ textAlign: 'center' }}>
+              <Box style={{ textAlign: 'center', alignItems: 'center' }}>
                 <Typography variant="h6">Question</Typography>
                 <Typography variant="body1">{data.question.title}</Typography>
-                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 8 }} style={{ alignItems: 'center' }}>
-                  <Grid item xs={6} style={{ backgroundColor: 'lime', color: 'white', borderRadius: '4px' }}>
-                    {data.question.goodAnswer}
+                <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 8 }} style={{ alignItems: 'center' }}>
+                  <Grid item xs={6}>
+                    <Typography
+                      variant="h6"
+                      style={{
+                        backgroundColor: 'lime',
+                        color: 'white',
+                        borderRadius: '5px',
+                      }}
+                    >
+                      {data.question.goodAnswer}
+                    </Typography>
                   </Grid>
                   {data.question.badAnswers.map((answer) => (
-                    <Grid item xs={6} style={{ backgroundColor: 'red', color: 'white', borderRadius: '4px' }}>
-                      {answer}
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="h6"
+                        style={{
+                          backgroundColor: 'red',
+                          color: 'white',
+                          borderRadius: '5px',
+                        }}
+                      >
+                        {answer}
+                      </Typography>
                     </Grid>
                   ))}
                 </Grid>
-              </Stack>
+              </Box>
               )}
             </Stack>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       )}
+      {!data && (<CircularProgress />)}
     </Box>
   );
 }
