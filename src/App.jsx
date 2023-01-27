@@ -7,6 +7,7 @@ import PoiPage from './pages/PoiPage';
 import GroupPage from './pages/GroupPage';
 import Header from './components/Header';
 import './App.css';
+import PoiDetailsPage from './pages/PoiDetailsPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/group" element={<GroupPage />} exact />
           <Route path="/poi" element={<PoiPage />} />
+          <Route path="/poi/:id" element={<PoiDetailsPage />} />
           <Route path="*" element={<Navigate replace to="/poi" />} />
         </Routes>
       </Box>
