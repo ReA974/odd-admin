@@ -12,6 +12,7 @@ import SelectObjectProps from '../components/inputs/SelectObjectProps';
 import { addPoi, setPoiPicture } from '../services/POIQueries';
 import getAllODD from '../services/ODDQueries';
 import ImportImageFile from '../components/inputs/ImportImageFile';
+import PoiQuestion from '../components/PoiQuestion';
 
 function AddPoiPage() {
   const [name, setName] = useState();
@@ -21,6 +22,11 @@ function AddPoiPage() {
   const [longitude, setLongitude] = useState();
   const [picture, setPicture] = useState('');
   const [imgFile, setImgFile] = useState('');
+  const [question, setQuestion] = useState();
+  const [badAnswers] = useState([]);
+  const [badAnswerOne, setBadAnswerOne] = useState();
+  const [badAnswerTwo, setBadAnswerTwo] = useState();
+  const [badAnswerThree, setBadAnswerThree] = useState();
   const [errorName, setErrorName] = useState(false);
   const [errorLatitude, setErrorLatitude] = useState(false);
   const [errorLongitude, setErrorLongitude] = useState(false);
@@ -77,7 +83,12 @@ function AddPoiPage() {
       setErrorMessage('Veuillez renseigner la longitude seulement avec des chiffres et une virgule');
     } else {
       const geoPoint = new GeoPoint(Number(latitude), Number(longitude));
-      const result = await addPoi(name, description, linkedOdd, geoPoint);
+      badAnswers.push(badAnswerOne);
+      badAnswers.push(badAnswerTwo);
+      badAnswers.push(badAnswerThree);
+      question.badAnswers = badAnswers;
+      setQuestion({ ...question });
+      const result = await addPoi(name, description, linkedOdd, geoPoint, question);
       saveImg(result.id);
       setErrorLongitude(false);
       setErrorLatitude(false);
@@ -91,7 +102,6 @@ function AddPoiPage() {
       <CircularProgress />
     );
   }
-
   return (
     <Box>
       <Box
@@ -172,7 +182,19 @@ function AddPoiPage() {
           />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+      <Box sx={{
+        display: 'flex', flexDirection: 'column', justifyContent: 'center', marginTop: '10px',
+      }}
+      >
+        <PoiQuestion
+          setParentValues={setQuestion}
+          badAnswerOne={badAnswerOne}
+          setBadAnswerOne={(value) => setBadAnswerOne(value)}
+          badAnswerTwo={badAnswerTwo}
+          setBadAnswerTwo={(value) => setBadAnswerTwo(value)}
+          badAnswerThree={badAnswerThree}
+          setBadAnswerThree={(value) => setBadAnswerThree(value)}
+        />
         {
           errorMessage !== '' && <Typography color="error">{errorMessage}</Typography>
         }

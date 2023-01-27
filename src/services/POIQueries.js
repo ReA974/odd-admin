@@ -16,13 +16,14 @@ const getAllPOI = async () => {
 
 export default getAllPOI;
 
-export const addPoi = async (name, description, linkedODD, coordinates) => {
+export const addPoi = async (name, description, linkedODD, coordinates, question) => {
   try {
     const poi = await addDoc(collection(db, '/POI'), {
       name,
       description,
       linkedODD,
       coordinates,
+      question,
       created: serverTimestamp(),
     });
     return { id: poi.id };

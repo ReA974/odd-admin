@@ -3,7 +3,9 @@ import { TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 
 function TextFieldProps({
-  id, label, variant, type, helperText, required, value, setValueComponent, error, width, maxLength,
+  id, label, variant, type, helperText, required,
+  value, setValueComponent, error, width, maxLength, placeHolder,
+  margin, color, marginTop, marginLeft, marginRight, maxWidth,
 }) {
   return (
     required
@@ -15,9 +17,13 @@ function TextFieldProps({
           type={type}
           value={value}
           error={error}
-          sx={{ width }}
+          sx={{
+            width, margin, marginTop, marginLeft, marginRight, maxWidth,
+          }}
+          color={color}
           helperText={helperText}
           onChange={(event) => setValueComponent(event.target.value)}
+          placeholder={placeHolder}
           inputProps={{ maxLength }}
           required
         />
@@ -30,9 +36,13 @@ function TextFieldProps({
           type={type}
           value={value}
           error={error}
-          sx={{ width }}
+          sx={{
+            width, margin, marginTop, marginLeft, marginRight, maxWidth,
+          }}
+          color={color}
           helperText={helperText}
           onChange={(event) => setValueComponent(event.target.value)}
+          placeholder={placeHolder}
           inputProps={{ maxLength }}
         />
       )
@@ -51,6 +61,13 @@ TextFieldProps.propTypes = {
   error: PropTypes.bool,
   width: PropTypes.string,
   maxLength: PropTypes.string,
+  placeHolder: PropTypes.string,
+  margin: PropTypes.string,
+  color: PropTypes.string,
+  marginTop: PropTypes.string,
+  marginLeft: PropTypes.string,
+  marginRight: PropTypes.string,
+  maxWidth: PropTypes.string,
 };
 
 TextFieldProps.defaultProps = {
@@ -62,7 +79,14 @@ TextFieldProps.defaultProps = {
   value: '',
   error: false,
   width: '100%',
-  maxLength: '',
+  maxLength: null,
+  placeHolder: null,
+  margin: null,
+  color: null,
+  marginTop: null,
+  marginLeft: null,
+  marginRight: null,
+  maxWidth: null,
 };
 
 export default TextFieldProps;
