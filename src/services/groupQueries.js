@@ -1,7 +1,8 @@
 import {
   deleteDoc, doc, setDoc, serverTimestamp,
 } from '@firebase/firestore';
-import { db } from './firestore.service';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { db, storage } from './firestore.service';
 
 export const deleteGroup = async (id) => {
   try {
@@ -25,4 +26,14 @@ export const addGroup = async (name, phone) => {
     return false;
   }
   return true;
+};
+
+export const getImage = async (url) => {
+  try {
+    const image = await getDownloadURL(ref(storage, url));
+    return image;
+  } catch (error) {
+    console.log(`Error while getting image: ${error}`);
+  }
+  return undefined;
 };

@@ -33,7 +33,7 @@ function GroupCard({ id, name }) {
         border: '1px solid lightGray', padding: '10px 5px', borderRadius: '4px',
       }}
     >
-      <Typography sx={{ paddingLeft: '15px' }} variant="h6">{name}</Typography>
+      <Typography sx={{ paddingLeft: '15px' }} variant="h6">{`${name} - ${id}`}</Typography>
       <Box>
         <IconButton onClick={handleClickOpen}>
           <DeleteOutlineOutlined color="error" />

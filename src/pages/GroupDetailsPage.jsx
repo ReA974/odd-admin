@@ -11,17 +11,27 @@ import { db } from '../services/firestore.service';
 import ChallengeAnswerCard from '../components/group/ChallengeAnswerCard';
 import ODDAnswerCard from '../components/group/ODDAnswerCard';
 
+function arrayEquals(a, b) {
+  return Array.isArray(a)
+      && Array.isArray(b)
+      && a.length === b.length
+      && a.every((val, index) => val === b[index]);
+}
+
 function GroupDetailsPage() {
   const { id } = useParams();
   const [group, setGroup] = useState(undefined);
   const [formattedPois, setFormattedPois] = useState(undefined);
   const [visitedPois, setVisitedPois] = useState(0);
   const [discoveredOdds, setDiscoveredOdds] = useState(0);
+  const [goodAnswerRate, setGoodAnswerRate] = useState(0);
 
-  const formatData = async (groupData) => {
+  const formatData = async () => {
     let visited = 0;
     const odds = new Set();
     const pois = [];
+    let goodAnswersCount = 0;
+    let answersCount = 0;
 
     const q = query(collection(db, `GROUP/${id}/VISIT`), orderBy('timestamp', 'asc'));
     const querySnapshot = await getDocs(q);
@@ -37,31 +47,52 @@ function GroupDetailsPage() {
         if (poiData.linkedODD) {
           poiData.linkedODD.map((odd) => odds.add(odd));
         }
-        let formattedPoi = { name: poiData.name, linkedODD: poiData.linkedODD, id: docSnap.id };
+        let formattedPoi = {
+          name: poiData.name, linkedODD: poiData.linkedODD.sort((a, b) => a - b), id: docSnap.id,
+        };
         if (visitData.questionAnswer) {
           formattedPoi = {
             ...formattedPoi,
             question: { ...poiData.question, groupAnswer: visitData.questionAnswer },
           };
+          answersCount += 1;
+          if (poiData.question.goodAnswer === visitData.questionAnswer) {
+            goodAnswersCount += 1;
+          }
         }
         if (visitData.challengeAnswer) {
           formattedPoi = {
             ...formattedPoi,
-            challenge: { ...poiData.challenge, groupAnswer: visitData.challengeAnswer },
+            challenge: {
+              ...poiData.challenge,
+              groupAnswer: visitData.challengeAnswer,
+              groupPhoto: visitData.challengePhoto ? visitData.challengePhoto : undefined,
+            },
           };
+          answersCount += 1;
+          if (poiData.challenge.type === 'photo' && visitData.challengeAnswer === true) {
+            goodAnswersCount += 1;
+          } else if (poiData.challenge.goodAnswer === visitData.challengeAnswer) {
+            goodAnswersCount += 1;
+          }
         }
         if (visitData.choosedODD) {
-          formattedPoi = { ...formattedPoi, choosedODD: visitData.choosedODD };
+          formattedPoi = {
+            ...formattedPoi, choosedODD: visitData.choosedODD.sort((a, b) => a - b),
+          };
+          answersCount += 1;
+          if (arrayEquals(formattedPoi.linkedODD, formattedPoi.choosedODD)) {
+            goodAnswersCount += 1;
+          }
         }
         pois.push(formattedPoi);
       }
     }));
 
-    console.log(groupData);
     setDiscoveredOdds(odds.size);
     setVisitedPois(visited);
-    console.log(pois);
     setFormattedPois(pois);
+    setGoodAnswerRate(answersCount > 0 ? Math.round((goodAnswersCount / answersCount) * 100) : 0);
   };
 
   // retrieve data and listen for changes
@@ -78,7 +109,7 @@ function GroupDetailsPage() {
       } else {
         unsuscribe = onSnapshot(docRef, (document) => {
           setVisitedPois(0);
-          formatData({ ...document.data() });
+          formatData();
           setGroup({ ...document.data() });
         });
       }
@@ -104,7 +135,7 @@ function GroupDetailsPage() {
             <ArrowBackIos sx={{ marginLeft: '7px' }} />
           </IconButton>
           <Typography variant="h4" sx={{ margin: '20px 0' }}>{group.name}</Typography>
-          <Typography>0% bonnes réponses</Typography>
+          <Typography>{`${goodAnswerRate}% bonnes réponses`}</Typography>
           <Typography>{`${visitedPois} point${visitedPois > 1 ? 's' : ''} d'intérêt visité${visitedPois > 1 ? 's' : ''}`}</Typography>
           <Typography>{`${discoveredOdds} ODD découvert${discoveredOdds > 1 ? 's' : ''}`}</Typography>
 
@@ -124,6 +155,7 @@ function GroupDetailsPage() {
                   poi.question
                   && (
                     <ChallengeAnswerCard
+                      type="multipleChoice"
                       title={poi.question.title}
                       groupAnswer={poi.question.groupAnswer}
                       badAnswers={poi.question.badAnswers}
@@ -135,6 +167,20 @@ function GroupDetailsPage() {
                   poi.choosedODD
                   && (
                     <ODDAnswerCard choosedOdds={poi.choosedODD} poiOdds={poi.linkedODD} />
+                  )
+                }
+                {
+                  poi.challenge
+                  && (
+                    <ChallengeAnswerCard
+                      type={poi.challenge.type}
+                      imageTitle={poi.challenge.image}
+                      title={poi.challenge.title ? poi.challenge.title : undefined}
+                      groupAnswer={poi.challenge.groupAnswer}
+                      badAnswers={poi.challenge.badAnswers ? poi.challenge.badAnswers : undefined}
+                      goodAnswer={poi.challenge.goodAnswer}
+                      photoAnswer={poi.challenge.groupPhoto}
+                    />
                   )
                 }
               </Box>

@@ -29,8 +29,8 @@ function ODDAnswerCard({ choosedOdds, poiOdds }) {
         minWidth: '250px',
       }}
     >
-      <Typography variant="h6" sx={{ fontWeight: 'bold', margin: '5px 0' }}>ODD choisis</Typography>
-      <Box display="flex">
+      <Typography variant="subtitle1" sx={{ fontWeight: 'bold', margin: '5px 0' }}>ODD choisis</Typography>
+      <Box display="flex" justifyContent="center" flexWrap="wrap">
         {
           choosedOdds.map((odd) => (
             <Typography
