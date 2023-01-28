@@ -3,7 +3,7 @@ import {
   Button, Dialog, DialogTitle, DialogActions, DialogContent,
   TextField, Box, Typography,
 } from '@mui/material';
-import { addGroup } from '../services/groupQueries';
+import { addGroup } from '../../services/groupQueries';
 
 function AddGroup() {
   const [name, setName] = useState('');

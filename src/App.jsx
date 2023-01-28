@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 import { Box } from '@mui/material';
 import GroupPage from './pages/GroupPage';
+import GroupDetailsPage from './pages/GroupDetailsPage';
 import Header, { HeaderAuth } from './components/Header';
 import Signin from './components/authentication/Signin';
 import ResetPassword from './components/authentication/ResetPassword';
@@ -38,6 +39,7 @@ function App() {
               </>
             )}
           >
+            <Route exact path="/group/:id" element={<GroupDetailsPage />} />
             <Route exact path="/group" element={<GroupPage />} />
             <Route exact path="/poi" element={<PoiPage />} />
             <Route exact path="/addPoi" element={<AddPoiPage />} />

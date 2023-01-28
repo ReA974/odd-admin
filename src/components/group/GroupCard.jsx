@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Typography, Box, IconButton, Dialog, DialogTitle,
   DialogActions, Button,
 } from '@mui/material';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { deleteGroup } from '../services/groupQueries';
+import { ArrowForwardIos, DeleteOutlineOutlined } from '@mui/icons-material';
+import { deleteGroup } from '../../services/groupQueries';
 
 function GroupCard({ id, name }) {
   const [openDialog, setOpenDialog] = useState(false);
@@ -29,13 +30,18 @@ function GroupCard({ id, name }) {
       justifyContent="space-between"
       alignItems="center"
       sx={{
-        border: '1px solid lightGray', padding: '10px 20px', borderRadius: '4px',
+        border: '1px solid lightGray', padding: '10px 5px', borderRadius: '4px',
       }}
     >
-      <Typography variant="h6">{name}</Typography>
-      <IconButton onClick={handleClickOpen}>
-        <DeleteOutlineOutlinedIcon color="error" />
-      </IconButton>
+      <Typography sx={{ paddingLeft: '15px' }} variant="h6">{`${name} - ${id}`}</Typography>
+      <Box>
+        <IconButton onClick={handleClickOpen}>
+          <DeleteOutlineOutlined color="error" />
+        </IconButton>
+        <IconButton component={Link} to={`/group/${id}`}>
+          <ArrowForwardIos />
+        </IconButton>
+      </Box>
       <Dialog
         open={openDialog}
         onClose={handleClose}
