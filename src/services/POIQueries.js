@@ -4,8 +4,8 @@ import {
   getDocs,
   serverTimestamp,
 } from '@firebase/firestore';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import { db } from './firestore.service';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from './firestore.service';
 
 const getAllPOI = async () => {
   const dataDic = {};
@@ -35,7 +35,6 @@ export const addPoi = async (name, description, linkedODD, coordinates, question
 
 export const setPoiPicture = async (poi, picture) => {
   let handleError = '';
-  const storage = getStorage();
   const imageRef = ref(storage, `/POI/${poi}`);
   const response = await uploadBytes(imageRef, picture).catch((error) => {
     handleError = error;
@@ -43,4 +42,14 @@ export const setPoiPicture = async (poi, picture) => {
   });
   if (handleError !== '') return [false, handleError];
   return [true, response];
+};
+
+export const getPoiPicture = async (id) => {
+  try {
+    const image = await getDownloadURL(ref(storage, `/POI/${id}`));
+    return image;
+  } catch (error) {
+    console.log(`Error while getting poi image: ${error}`);
+  }
+  return undefined;
 };

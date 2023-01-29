@@ -35,16 +35,20 @@ function PoiPage() {
         display="flex"
         justifyContent="center"
         sx={{
-          marginTop: '50px', flexGrow: 1,
+          margin: '50px 0', flexGrow: 1,
         }}
       >
         { POIListData !== undefined && POIListData.length !== 0
           && (
-            <Grid container spacing={2} sx={{ width: '80vw', maxWidth: '1500px' }} display="flex">
+            <Grid container spacing={2} sx={{ width: '80vw', maxWidth: '1500px' }} display="flex" justifyContent="center">
               {
                 Object.keys(POIListData).map((key) => (
-                  <Grid key={key} item xs={6} sx={{ width: '35vw', minWidth: '300px' }}>
-                    <PoiCard id={key} data={POIListData[key]} />
+                  <Grid key={key} item xs={6} sx={{ width: '35vw', minWidth: 'min(500px, 80vw)' }}>
+                    <PoiCard
+                      id={key}
+                      title={POIListData[key].name}
+                      description={POIListData[key].description}
+                    />
                   </Grid>
                 ))
               }
@@ -52,7 +56,7 @@ function PoiPage() {
           )}
         {
           POIListData !== undefined && POIListData.length === 0
-          && <Typography>Il n&apos;y a aucun groupe</Typography>
+          && <Typography>Il n&apos;y a aucun point d&apos;intérêt</Typography>
         }
         {
           POIListData === undefined && <CircularProgress />
