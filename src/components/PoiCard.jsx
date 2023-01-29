@@ -1,5 +1,6 @@
 /* eslint-disable quotes */
 import React, { useEffect, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Typography, Card, CardActionArea, CardContent, CardMedia, Box,
@@ -31,7 +32,7 @@ function PoiCard({
 
   return (
     <Card sx={{ height: width < 900 ? '300px' : '175px' }}>
-      <CardActionArea sx={{ height: '100%' }}>
+      <CardActionArea component={RouterLink} to={`/poi/${id}`} sx={{ height: '100%' }}>
         <Box
           display="flex"
           flexDirection={width < 900 ? 'column' : 'row'}
