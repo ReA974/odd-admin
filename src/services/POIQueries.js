@@ -2,11 +2,15 @@ import {
   addDoc,
   collection,
   getDocs,
-  doc, 
+  doc,
   serverTimestamp,
   getDoc,
 } from '@firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {
+  ref,
+  getDownloadURL,
+  uploadBytes,
+} from 'firebase/storage';
 import { db, storage } from './firestore.service';
 
 export const getAllPOI = async () => {
