@@ -27,7 +27,7 @@ function PoiPage() {
   }
 
   return (
-    <Box>
+    <Box sx={{ marginTop: '50px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
         <ButtonProps text="Ajouter un point d'intérêt" variant="contained" to="/addPoi" component />
       </Box>
