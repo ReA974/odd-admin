@@ -43,8 +43,8 @@ function App() {
             <Route exact path="/group" element={<GroupPage />} />
             <Route exact path="/poi" element={<PoiPage />} />
             <Route exact path="/addPoi" element={<AddPoiPage />} />
+            <Route path="/" element={<Navigate replace to="/poi" />} />
           </Route>
-          <Route path="*" element={<Navigate replace to="/poi" />} />
         </Routes>
       </Box>
     </BrowserRouter>
