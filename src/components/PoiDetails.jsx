@@ -10,6 +10,7 @@ import {
 import {
   DeleteOutline, EditOutlined, PhotoCamera,
 } from '@mui/icons-material';
+import DisplayQuestion from './poi/DisplayQuestion';
 
 function PoiDetails({ id, data }) {
   console.log(id);
@@ -49,9 +50,7 @@ function PoiDetails({ id, data }) {
                     marginBottom: '1vw',
                   }}
                   >
-                    ODD
-                    {' '}
-                    {odd}
+                    {`ODD ${odd}`}
                   </Typography>
                 ))}
               </Box>
@@ -88,48 +87,11 @@ function PoiDetails({ id, data }) {
               </MapContainer>
               {data.question
               && (
-              <Box
-                marginTop="0.5vw"
-                padding="1vw"
-                paddingTop="0.5vw"
-                border="thin solid lightgrey"
-                style={{
-                  textAlign: 'center',
-                  alignItems: 'center',
-                  width: '100%',
-                }}
-              >
-                <Typography variant="h5">Question</Typography>
-                <Typography variant="body1" marginBottom="0.5vw">{data.question.title}</Typography>
-                <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 8 }} style={{ alignItems: 'center' }}>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="h6"
-                      style={{
-                        backgroundColor: 'limegreen',
-                        color: 'white',
-                        borderRadius: '5px',
-                      }}
-                    >
-                      {data.question.goodAnswer}
-                    </Typography>
-                  </Grid>
-                  {data.question.badAnswers.map((answer) => (
-                    <Grid item xs={6}>
-                      <Typography
-                        variant="h6"
-                        style={{
-                          backgroundColor: 'tomato',
-                          color: 'white',
-                          borderRadius: '5px',
-                        }}
-                      >
-                        {answer}
-                      </Typography>
-                    </Grid>
-                  ))}
-                </Grid>
-              </Box>
+                <DisplayQuestion
+                  title={data.question.title}
+                  goodAnswer={data.question.goodAnswer}
+                  badAnswers={data.question.badAnswers}
+                />
               )}
               {data.challenge && (
               <Box
