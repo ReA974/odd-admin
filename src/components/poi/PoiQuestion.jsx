@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import TextFieldProps from '../inputs/TextFieldProps';
 import ImportImageFile from '../inputs/ImportImageFile';
@@ -31,6 +31,7 @@ function PoiQuestion({
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
+        flexWrap: 'wrap',
         margin: '15px',
       }}
       >
@@ -41,8 +42,8 @@ function PoiQuestion({
               label="Intitulé"
               value={question && question.title}
               setValueComponent={(value) => setQuestion({ ...question, title: value })}
-              maxWidth="300px"
-              width="100%"
+              maxWidth="40vw"
+              marginBottom="10px"
               required
             />
           )
@@ -59,7 +60,7 @@ function PoiQuestion({
         {
           typeTitle === 'Les deux'
           && (
-            <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" flexWrap="wrap" justifyContent="center">
               <ImportImageFile
                 setImgFile={(value) => setQuestion({ ...question, image: value })}
                 labelId="QuizzChallenge"
@@ -68,8 +69,9 @@ function PoiQuestion({
                 label="Intitulé"
                 value={question && question.title}
                 setValueComponent={(value) => setQuestion({ ...question, title: value })}
-                maxWidth="300px"
-                width="100%"
+                maxWidth="40vw"
+                marginBottom="10px"
+                marginTop="10px"
                 required
               />
             </Box>
@@ -84,64 +86,53 @@ function PoiQuestion({
           justifyContent: 'center',
         }}
         >
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '20vw',
-            marginRight: '10px',
-            marginLeft: '10px',
-            minWidth: '250px',
-            maxWidth: '600px',
-          }}
+          <Grid
+            container
+            spacing={1}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+            }}
           >
-            <TextFieldProps
-              label="Bonne réponse"
-              setValueComponent={(value) => setQuestion({ ...question, goodAnswer: value })}
-              value={question && question.goodAnswer}
-              marginTop="10px"
-              marginRight="10px"
-              color="success"
-              required
-            />
-            <TextFieldProps
-              label="Mauvaise réponse 1"
-              setValueComponent={(value) => setBadAnswerOne(value)}
-              value={badAnswerOne}
-              marginTop="10px"
-              marginRight="10px"
-              color="error"
-              required
-            />
-          </Box>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '20vw',
-            marginRight: '10px',
-            marginLeft: '10px',
-            minWidth: '250px',
-            maxWidth: '600px',
-          }}
-          >
-            <TextFieldProps
-              label="Mauvaise réponse 2"
-              setValueComponent={(value) => setBadAnswerTwo(value)}
-              value={badAnswerTwo}
-              marginTop="10px"
-              marginRight="10px"
-              color="error"
-              required
-            />
-            <TextFieldProps
-              label="Mauvaise réponse 3"
-              setValueComponent={(value) => setBadAnswerThree(value)}
-              value={badAnswerThree}
-              marginTop="10px"
-              marginRight="10px"
-              color="error"
-              required
-            />
-          </Box>
+            <Grid item xs={6} minWidth="200px">
+              <TextFieldProps
+                label="Bonne réponse"
+                setValueComponent={(value) => setQuestion({ ...question, goodAnswer: value })}
+                value={question && question.goodAnswer}
+                color="success"
+                required
+              />
+            </Grid>
+            <Grid item xs={6} minWidth="200px">
+              <TextFieldProps
+                label="Mauvaise réponse 1"
+                setValueComponent={(value) => setBadAnswerOne(value)}
+                value={badAnswerOne}
+                color="error"
+                required
+              />
+            </Grid>
+            <Grid item xs={6} minWidth="200px">
+              <TextFieldProps
+                label="Mauvaise réponse 2"
+                setValueComponent={(value) => setBadAnswerTwo(value)}
+                value={badAnswerTwo}
+                color="error"
+                required
+              />
+            </Grid>
+            <Grid item xs={6} minWidth="200px">
+              <TextFieldProps
+                label="Mauvaise réponse 3"
+                setValueComponent={(value) => setBadAnswerThree(value)}
+                value={badAnswerThree}
+                color="error"
+                required
+              />
+            </Grid>
+          </Grid>
         </Box>
       </Box>
     </Box>

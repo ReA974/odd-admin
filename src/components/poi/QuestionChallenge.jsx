@@ -20,12 +20,12 @@ function QuestionChallenge({ setChallenge, challenge }) {
   };
   return (
     <Box sx={{
-      display: 'flex', flexDirection: 'column', textAlign: 'center', alignItems: 'center',
+      display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
     }}
     >
       <SelectStringProps
         label="Intitulé"
-        width="100%"
+        width="50vw"
         valueComponent={titleType}
         setValueComponent={(value) => setTitleType(value)}
         dataSelectable={titleSelectable}
@@ -36,7 +36,6 @@ function QuestionChallenge({ setChallenge, challenge }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        textAlign: 'center',
         margin: '15px',
       }}
       >
@@ -47,8 +46,8 @@ function QuestionChallenge({ setChallenge, challenge }) {
               label="Intitulé"
               value={challenge && challenge.title}
               setValueComponent={(value) => setChallenge({ ...challenge, title: value })}
-              maxWidth="300px"
-              width="100%"
+              width="50vw"
+              minWidth="25vw"
               required
             />
           )
@@ -65,7 +64,7 @@ function QuestionChallenge({ setChallenge, challenge }) {
         {
           titleType === 'Les deux'
           && (
-            <Box display="flex" alignItems="center" flexWrap="wrap">
+            <Box display="flex" alignItems="center" flexWrap="wrap" justifyContent="center">
               <ImportImageFile
                 setImgFile={(value) => setChallenge({ ...challenge, image: value })}
                 labelId="QuizzChallenge"
@@ -74,22 +73,31 @@ function QuestionChallenge({ setChallenge, challenge }) {
                 label="Intitulé"
                 value={challenge && challenge.title}
                 setValueComponent={(value) => setChallenge({ ...challenge, title: value })}
-                maxWidth="300px"
-                width="100%"
+                width="50vw"
+                minWidth="25vw"
+                marginTop="10px"
+                marginBottom="10px"
                 required
               />
             </Box>
           )
         }
-        <TextFieldProps
-          label="Bonne réponse"
-          setValueComponent={(value) => setChallenge({ ...challenge, goodAnswer: value, type: 'field' })}
-          value={challenge && challenge.goodAnswer}
-          marginTop="10px"
-          marginRight="10px"
-          color="success"
-          required
-        />
+        {
+          titleType
+          && (
+            <TextFieldProps
+              label="Bonne réponse"
+              setValueComponent={
+                (value) => setChallenge({ ...challenge, goodAnswer: value, type: 'field' })
+              }
+              value={challenge && challenge.goodAnswer}
+              marginTop="10px"
+              width="40vw"
+              color="success"
+              required
+            />
+          )
+        }
       </Box>
     </Box>
   );

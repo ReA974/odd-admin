@@ -23,7 +23,7 @@ function QuizzChallenge({ setChallenge, challenge }) {
     }
     if (badAnswers.length !== 3) {
       setChallenge({
-        ...challenge, badAnswers, type: 'question',
+        ...challenge, badAnswers, type: 'multipleChoice',
       });
     }
   }, [badAnswerOne, badAnswerTwo, badAnswerThree]);
@@ -43,12 +43,13 @@ function QuizzChallenge({ setChallenge, challenge }) {
   };
   return (
     <Box sx={{
-      display: 'flex', flexDirection: 'column', textAlign: 'center', alignItems: 'center',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
     }}
     >
       <SelectStringProps
         label="Intitulé"
-        width="100%"
+        width="50vw"
+        minWidth="25vw"
         valueComponent={titleType}
         setValueComponent={(value) => setTitleType(value)}
         dataSelectable={titleSelectable}

@@ -31,7 +31,7 @@ function AddChallengePage({ challenge, setChallenge }) {
         case 'picture':
           setChallengeType('Prendre une photo');
           break;
-        case 'quizz':
+        case 'multipleChoice':
           setChallengeType('Quizz');
           break;
         case 'question':
@@ -62,14 +62,9 @@ function AddChallengePage({ challenge, setChallenge }) {
     <Box sx={{
       display: 'flex',
       flexDirection: 'column',
-      textAlign: 'center',
       alignItems: 'center',
-      width: '40vw',
-      minWidth: '250px',
-      maxWidth: '600px',
-      '& .MuiTextField-root': {
-        m: 1, width: '35vw', minWidth: '250px', maxWidth: '600px',
-      },
+      justifyContent: 'center',
+      width: '60vw',
     }}
     >
       <Typography>Défi</Typography>
@@ -79,14 +74,14 @@ function AddChallengePage({ challenge, setChallenge }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          '& .MuiTextField-root': { m: 1, width: '25ch' },
+          justifyContent: 'center',
         }}
         noValidate
         autoComplete="off"
       >
         <SelectStringProps
           label="Type de défi"
-          width="100%"
+          width="50vw"
           minWidth="25vw"
           valueComponent={challengeType}
           setValueComponent={setChallengeType}

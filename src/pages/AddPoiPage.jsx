@@ -63,6 +63,7 @@ function AddPoiPage() {
     });
   };
 
+  console.log(challenge);
   const handleAddPoi = async () => {
     const regex = /^(-?[1-8]?\d(?:\.\d{1,18})?|90(?:\.0{1,18})?)$/;
     if (name === '') {
@@ -214,8 +215,10 @@ function AddPoiPage() {
       }}
       >
         <Box sx={{
+          width: '60vw',
           marginTop: '20px',
-          border: 'solid',
+          border: '1px solid lightgrey',
+          padding: '10px 0px',
           borderRadius: '15px',
         }}
         >
@@ -231,7 +234,8 @@ function AddPoiPage() {
         </Box>
         <Box sx={{
           marginTop: '20px',
-          border: 'solid',
+          border: '1px solid lightgrey',
+          padding: '10px 0px',
           borderRadius: '15px',
         }}
         >

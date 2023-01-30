@@ -19,8 +19,9 @@ function PictureChallenge({ setChallenge, challenge }) {
         label="Intitulé"
         value={challenge && challenge.title}
         setValueComponent={(value) => setChallenge({ ...challenge, title: value })}
-        maxWidth="300px"
-        width="100%"
+        width="50vw"
+        minWidth="25vw"
+        marginBottom="10px"
         required
       />
       <ImportImageFile

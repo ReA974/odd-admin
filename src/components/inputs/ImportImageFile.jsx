@@ -25,13 +25,17 @@ function ImportImageFile({ setImgFile, labelId }) {
           sx={{
             height: '30vw',
             width: '35vw',
-            minWidth: '250px',
+            minWidth: '200px',
             maxWidth: '600px',
             maxHeight: '330px',
-            minHeight: '200px',
+            minHeight: '170px',
+            marginBottom: '10px',
           }}
         >
-          <ImageIcon sx={{ width: 200, height: 'auto' }} />
+          <ImageIcon sx={{
+            width: 150, minWidth: 100, height: 'auto',
+          }}
+          />
         </Avatar>
         <input
           onChange={handleChange}
