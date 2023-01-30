@@ -7,7 +7,7 @@ import { Box } from '@mui/system';
 import {
   Button, ButtonGroup, CircularProgress, Divider, Grid, Stack, Typography,
 } from '@mui/material';
-import { DeleteOutline, EditOutlined } from '@mui/icons-material';
+import { DeleteOutline, EditOutlined, PhotoCameraFrontOutlined } from '@mui/icons-material';
 
 function PoiDetails({ id, data }) {
   console.log(id);
@@ -26,7 +26,7 @@ function PoiDetails({ id, data }) {
               alignItems="center"
             >
               <img src={data.imageURL} alt={`${data.name} img`} style={{ height: '200px', width: '100%', objectFit: 'cover' }} />
-              <Typography variant="h5">{data.name}</Typography>
+              <Typography variant="h4">{data.name}</Typography>
               <Typography variant="body1">{data.description}</Typography>
               <ButtonGroup>
                 <Button>
@@ -45,7 +45,7 @@ function PoiDetails({ id, data }) {
             <Stack
               alignItems="center"
             >
-              <Typography variant="h6">Localisation GPS</Typography>
+              <Typography variant="h5">Localisation GPS</Typography>
               <MapContainer
                 center={[data.coordinates.latitude, data.coordinates.longitude]}
                 zoom={15}
@@ -64,7 +64,7 @@ function PoiDetails({ id, data }) {
               {data.question
               && (
               <Box style={{ textAlign: 'center', alignItems: 'center' }}>
-                <Typography variant="h6">Question</Typography>
+                <Typography variant="h5">Question</Typography>
                 <Typography variant="body1">{data.question.title}</Typography>
                 <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 8 }} style={{ alignItems: 'center' }}>
                   <Grid item xs={6}>
@@ -95,6 +95,74 @@ function PoiDetails({ id, data }) {
                   ))}
                 </Grid>
               </Box>
+              )}
+              {data.challenge && (
+              <>
+                {data.challenge.type === 'multipleChoice' && (
+                  <Box textAlign="center">
+                    <Typography variant="h5">Défi</Typography>
+                    <Typography variant="h6">Question a choix multiple</Typography>
+                    <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 8 }} style={{ alignItems: 'center' }}>
+                      <Grid item xs={6}>
+                        <Typography
+                          variant="h6"
+                          style={{
+                            backgroundColor: 'lime',
+                            color: 'white',
+                            borderRadius: '5px',
+                          }}
+                        >
+                          {data.challenge.goodAnswer}
+                        </Typography>
+                      </Grid>
+                      {data.challenge.badAnswers.map((answer) => (
+                        <Grid item xs={6}>
+                          <Typography
+                            variant="h6"
+                            style={{
+                              backgroundColor: 'red',
+                              color: 'white',
+                              borderRadius: '5px',
+                            }}
+                          >
+                            {answer}
+                          </Typography>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Box>
+                )}
+                {data.challenge.type === 'field' && (
+                  <Box textAlign="center">
+                    <Typography variant="h5">Défi</Typography>
+                    <Typography variant="h6">Question libre</Typography>
+                    <Stack direction="row">
+                      <Typography sx={{ width: '50%' }}>{data.challenge.title}</Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{ width: '50%', justifyContent: 'center' }}
+                        style={{
+                          backgroundColor: 'lime',
+                          color: 'white',
+                          borderRadius: '5px',
+                        }}
+                      >
+                        {data.challenge.goodAnswer}
+                      </Typography>
+                    </Stack>
+                  </Box>
+                )}
+                {data.challenge.type === 'photo' && (
+                  <Box textAlign="center">
+                    <Typography variant="h5">Défi</Typography>
+                    <Typography variant="h6">Prendre une photo</Typography>
+                    <Stack direction="row">
+                      <PhotoCameraFrontOutlined sx={{ width: '50%' }} />
+                      <Typography sx={{ width: '50%' }}>{data.challenge.title}</Typography>
+                    </Stack>
+                  </Box>
+                )}
+              </>
               )}
             </Stack>
           </Box>
