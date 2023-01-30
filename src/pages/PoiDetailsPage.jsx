@@ -1,7 +1,7 @@
-import { CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { CircularProgress, Box } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import PoiDetails from '../components/PoiDetails1';
+import PoiDetails from '../components/PoiDetails';
 import { getImageByPOI, getPOI } from '../services/POIQueries';
 
 function PoiDetailsPage() {
@@ -26,15 +26,16 @@ function PoiDetailsPage() {
   }
 
   return (
-    <div>
+    <Box display="flex" justifyContent="center">
       <PoiDetails
         image={POIDetailsData.imageURL}
         name={POIDetailsData.name}
         description={POIDetailsData.description}
         linkedOdds={POIDetailsData.linkedODD}
         coordinates={POIDetailsData.coordinates}
+        question={POIDetailsData.question}
       />
-    </div>
+    </Box>
   );
 }
 
