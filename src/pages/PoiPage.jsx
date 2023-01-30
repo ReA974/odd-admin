@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Grid, Box, CircularProgress, Typography,
 } from '@mui/material';
-import getAllPOI from '../services/POIQueries';
+import { getAllPOI } from '../services/POIQueries';
 import PoiCard from '../components/PoiCard';
 import ButtonProps from '../components/inputs/ButtonProps';
 
