@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import TextFieldProps from './inputs/TextFieldProps';
+import TextFieldProps from '../inputs/TextFieldProps';
+import ImportImageFile from '../inputs/ImportImageFile';
 
 function PoiQuestion({
   setParentValues, badAnswerOne, badAnswerTwo, badAnswerThree,
-  setBadAnswerOne, setBadAnswerTwo, setBadAnswerThree,
+  setBadAnswerOne, setBadAnswerTwo, setBadAnswerThree, typeTitle,
 }) {
   const [question, setQuestion] = useState();
 
@@ -18,7 +19,12 @@ function PoiQuestion({
       display: 'flex', flexDirection: 'column', textAlign: 'center', alignItems: 'center',
     }}
     >
-      <Typography>Question</Typography>
+      {
+        typeTitle === ''
+        && (
+          <Typography>Question</Typography>
+        )
+      }
       <Box sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -28,14 +34,48 @@ function PoiQuestion({
         margin: '15px',
       }}
       >
-        <TextFieldProps
-          label="Intitulé"
-          value={question && question.title}
-          setValueComponent={(value) => setQuestion({ ...question, title: value })}
-          maxWidth="300px"
-          width="100%"
-          required
-        />
+        {
+          (typeTitle === 'Texte' || typeTitle === '')
+          && (
+            <TextFieldProps
+              label="Intitulé"
+              value={question && question.title}
+              setValueComponent={(value) => setQuestion({ ...question, title: value })}
+              maxWidth="300px"
+              width="100%"
+              required
+            />
+          )
+        }
+        {
+          typeTitle === 'Image'
+          && (
+            <ImportImageFile
+              setImgFile={(value) => setQuestion({ ...question, image: value })}
+              labelId="QuizzChallenge"
+            />
+          )
+        }
+        {
+          typeTitle === 'Les deux'
+          && (
+            <Box display="flex" alignItems="center">
+              <ImportImageFile
+                setImgFile={(value) => setQuestion({ ...question, image: value })}
+                labelId="QuizzChallenge"
+              />
+              <TextFieldProps
+                label="Intitulé"
+                value={question && question.title}
+                setValueComponent={(value) => setQuestion({ ...question, title: value })}
+                maxWidth="300px"
+                width="100%"
+                required
+              />
+            </Box>
+          )
+        }
+
         <Box sx={{
           display: 'flex',
           flexDirection: 'row',
@@ -60,7 +100,6 @@ function PoiQuestion({
               value={question && question.goodAnswer}
               marginTop="10px"
               marginRight="10px"
-              marginLeft="10px"
               color="success"
               required
             />
@@ -70,7 +109,6 @@ function PoiQuestion({
               value={badAnswerOne}
               marginTop="10px"
               marginRight="10px"
-              marginLeft="10px"
               color="error"
               required
             />
@@ -91,7 +129,6 @@ function PoiQuestion({
               value={badAnswerTwo}
               marginTop="10px"
               marginRight="10px"
-              marginLeft="10px"
               color="error"
               required
             />
@@ -101,7 +138,6 @@ function PoiQuestion({
               value={badAnswerThree}
               marginTop="10px"
               marginRight="10px"
-              marginLeft="10px"
               color="error"
               required
             />
@@ -120,12 +156,14 @@ PoiQuestion.propTypes = {
   badAnswerOne: PropTypes.string,
   badAnswerTwo: PropTypes.string,
   badAnswerThree: PropTypes.string,
+  typeTitle: PropTypes.string,
 };
 
 PoiQuestion.defaultProps = {
   badAnswerOne: '',
   badAnswerTwo: '',
   badAnswerThree: '',
+  typeTitle: '',
 };
 
 export default PoiQuestion;

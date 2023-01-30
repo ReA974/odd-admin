@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 
 function SelectStringProps({
-  label, dataSelectable, valueComponent, setValueComponent, multiple, width,
+  label, dataSelectable, valueComponent, setValueComponent, multiple, width, maxWidth, minWidth,
 }) {
   const handleChange = (event) => {
     const { target: { value } } = event;
@@ -13,7 +13,10 @@ function SelectStringProps({
   };
 
   return (
-    <FormControl sx={{ m: 1, width: { width } }}>
+    <FormControl sx={{
+      m: 1, width, maxWidth, minWidth,
+    }}
+    >
       <InputLabel id={`${label}-select-label`}>{label}</InputLabel>
       <Select
         labelId={`${label}-select-label`}
@@ -40,12 +43,16 @@ SelectStringProps.propTypes = {
   setValueComponent: PropTypes.func.isRequired,
   multiple: PropTypes.bool,
   width: PropTypes.string,
+  maxWidth: PropTypes.string,
+  minWidth: PropTypes.string,
 };
 
 SelectStringProps.defaultProps = {
   valueComponent: '',
   multiple: false,
   width: '100%',
+  maxWidth: undefined,
+  minWidth: undefined,
 };
 
 export default SelectStringProps;

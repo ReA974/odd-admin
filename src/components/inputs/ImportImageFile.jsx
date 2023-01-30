@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import ImageIcon from '@mui/icons-material/Image';
 
-function ImportImageFile({ setImgFile }) {
+function ImportImageFile({ setImgFile, labelId }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [currentImg, setCurrentImg] = useState('');
 
@@ -17,7 +17,7 @@ function ImportImageFile({ setImgFile }) {
 
   return (
     <Box display="flex" justifyContent="center">
-      <label htmlFor="imgupload">
+      <label htmlFor={labelId}>
         <Avatar
           alt=""
           src={currentImg}
@@ -38,7 +38,7 @@ function ImportImageFile({ setImgFile }) {
           type="file"
           accept="image/png, image/jpeg"
           name="picture"
-          id="imgupload"
+          id={labelId}
           hidden
         />
       </label>
@@ -49,6 +49,7 @@ function ImportImageFile({ setImgFile }) {
 
 ImportImageFile.propTypes = {
   setImgFile: PropTypes.func.isRequired,
+  labelId: PropTypes.string.isRequired,
 };
 
 export default ImportImageFile;

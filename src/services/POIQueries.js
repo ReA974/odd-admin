@@ -63,7 +63,7 @@ export async function getImageByPOI(id) {
   return URI;
 }
 
-export const addPoi = async (name, description, linkedODD, coordinates, question) => {
+export const addPoi = async (name, description, linkedODD, coordinates, question, challenge) => {
   try {
     const poi = await addDoc(collection(db, '/POI'), {
       name,
@@ -71,6 +71,7 @@ export const addPoi = async (name, description, linkedODD, coordinates, question
       linkedODD,
       coordinates,
       question,
+      challenge,
       created: serverTimestamp(),
     });
     return { id: poi.id };
@@ -80,9 +81,9 @@ export const addPoi = async (name, description, linkedODD, coordinates, question
   }
 };
 
-export const setPoiPicture = async (poi, picture) => {
+export const setPoiPicture = async (poi, picture, url) => {
   let handleError = '';
-  const imageRef = ref(storage, `/POI/${poi}`);
+  const imageRef = ref(storage, `/${url}/${poi}`);
   const response = await uploadBytes(imageRef, picture).catch((error) => {
     handleError = error;
     console.log(error);

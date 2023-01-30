@@ -1,28 +1,78 @@
-import React, { useState } from 'react';
-import { Box, Button, IconButton } from '@mui/material';
-import { PhotoCamera } from '@mui/icons-material';
-import TextFieldProps from '../components/inputs/TextFieldProps';
-import TextAreaProps from '../components/inputs/TextAreaProps';
-import ButtonProps from '../components/inputs/ButtonProps';
+import React, { useEffect, useState } from 'react';
+import {
+  Box, Typography,
+} from '@mui/material';
+import PropTypes from 'prop-types';
 import SelectStringProps from '../components/inputs/SelectStringProps';
+import PictureChallenge from '../components/poi/PictureChallenge';
+import QuizzChallenge from '../components/poi/QuizzChallenge';
+import QuestionChallenge from '../components/poi/QuestionChallenge';
 
-function AddChallengePage() {
-  const [name, setName] = useState();
-  const [description, setDescription] = useState();
+function AddChallengePage({ challenge, setChallenge }) {
   const [challengeType, setChallengeType] = useState();
-  const [challengeAnswer, setChallengeAnswer] = useState();
-
+  const [pictureChallenge, setPictureChallenge] = useState();
+  const [questionChallenge, setQuestionChallenge] = useState();
+  const [quizzChallenge, setQuizzChallenge] = useState();
   const challengeTypeSelectable = {
     1: {
-      name: 'Photo',
+      name: 'Prendre une photo',
     },
     2: {
       name: 'Quizz',
     },
+    3: {
+      name: 'Question',
+    },
   };
 
+  useEffect(() => {
+    if (challenge && challenge.type) {
+      switch (challenge.type) {
+        case 'picture':
+          setChallengeType('Prendre une photo');
+          break;
+        case 'quizz':
+          setChallengeType('Quizz');
+          break;
+        case 'question':
+          setChallengeType('Question');
+          break;
+        default:
+          break;
+      }
+    }
+  }, [challenge]);
+
+  useEffect(() => {
+    if (pictureChallenge) {
+      setChallenge({});
+      setChallenge(pictureChallenge);
+    }
+    if (questionChallenge) {
+      setChallenge({});
+      setChallenge(questionChallenge);
+    }
+    if (quizzChallenge) {
+      setChallenge({});
+      setChallenge(quizzChallenge);
+    }
+  }, [pictureChallenge, questionChallenge, quizzChallenge]);
+
   return (
-    <Box>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      textAlign: 'center',
+      alignItems: 'center',
+      width: '40vw',
+      minWidth: '250px',
+      maxWidth: '600px',
+      '& .MuiTextField-root': {
+        m: 1, width: '35vw', minWidth: '250px', maxWidth: '600px',
+      },
+    }}
+    >
+      <Typography>Défi</Typography>
       <Box
         component="form"
         sx={{
@@ -34,53 +84,59 @@ function AddChallengePage() {
         noValidate
         autoComplete="off"
       >
-        <TextFieldProps
-          label="Nom"
-          required
-          value={name}
-          setValueComponent={setName}
-        />
-        <TextAreaProps
-          placeholder="Description"
-          minRows={3}
-          value={description}
-          setValueComponent={setDescription}
-        />
         <SelectStringProps
           label="Type de défi"
+          width="100%"
+          minWidth="25vw"
           valueComponent={challengeType}
           setValueComponent={setChallengeType}
           dataSelectable={challengeTypeSelectable}
         />
         {
-          challengeType && challengeType === 'Photo'
-            ? (
-              <Box>
-                <Button variant="contained" component="label">
-                  Upload
-                  <input hidden accept="image/*" multiple type="file" />
-                </Button>
-                <IconButton color="primary" aria-label="upload picture" component="label">
-                  <input hidden accept="image/*" type="file" />
-                  <PhotoCamera />
-                </IconButton>
-              </Box>
-            )
-            : (
-              <TextFieldProps
-                label="Résultat attendu"
-                required
-                value={challengeAnswer}
-                setValueComponent={setChallengeAnswer}
-              />
-            )
+          challengeType && challengeType === 'Prendre une photo'
+          && (
+            <PictureChallenge
+              setChallenge={
+                (value) => setPictureChallenge({ ...pictureChallenge, challenge: value })
+              }
+              challenge={pictureChallenge && pictureChallenge.challenge}
+            />
+          )
         }
-      </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-        <ButtonProps text="Ajouter le défi" type="submit" component />
+        {
+          challengeType && challengeType === 'Quizz'
+          && (
+            <QuizzChallenge
+              setChallenge={
+                (value) => setQuizzChallenge({ ...quizzChallenge, challenge: value })
+              }
+              challenge={quizzChallenge && quizzChallenge.challenge}
+            />
+          )
+        }
+        {
+          challengeType && challengeType === 'Question'
+          && (
+            <QuestionChallenge
+              setChallenge={
+                (value) => setQuestionChallenge({ ...questionChallenge, challenge: value })
+              }
+              challenge={questionChallenge && questionChallenge.challenge}
+            />
+          )
+        }
       </Box>
     </Box>
   );
 }
+
+AddChallengePage.propTypes = {
+  setChallenge: PropTypes.func.isRequired,
+  challenge: PropTypes.instanceOf(Object),
+};
+
+AddChallengePage.defaultProps = {
+  challenge: undefined,
+};
 
 export default AddChallengePage;
