@@ -11,6 +11,7 @@ import {
   ref,
   getDownloadURL,
   uploadBytes,
+  deleteObject,
 } from 'firebase/storage';
 import { db, storage } from './firestore.service';
 
@@ -39,30 +40,6 @@ export const getPOI = async (id) => {
   }
   return queryData;
 };
-
-export async function getImageByPOI(id) {
-  let URI = '';
-  const referenceToImage = ref(storage, `POI/${id}`);
-  // Get the download URL
-  URI = await getDownloadURL(referenceToImage).catch((error) => {
-    switch (error.code) {
-      case 'storage/object-not-found':
-        break;
-      case 'storage/unauthorized':
-        // User doesn't have permission to access the object
-        break;
-      case 'storage/canceled':
-        // User canceled the upload
-        break;
-      case 'storage/unknown':
-        // Unknown error occurred, inspect the server response
-        break;
-      default:
-        break;
-    }
-  });
-  return URI;
-}
 
 export const addPoi = async (name, description, linkedODD, coordinates, question) => {
   try {
@@ -105,6 +82,7 @@ export const getPoiPicture = async (id) => {
 export const deletePoi = async (id) => {
   try {
     await deleteDoc(doc(db, 'POI', id));
+    deleteObject(ref(storage, `/POI/${id}`));
   } catch (error) {
     console.log(`Error while deleting group: ${error}`);
     return false;

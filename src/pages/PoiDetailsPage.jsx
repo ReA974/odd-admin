@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { CircularProgress, Box } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import PoiDetails from '../components/PoiDetails';
-import { getImageByPOI, getPOI } from '../services/POIQueries';
+import { getPOI, getPoiPicture } from '../services/POIQueries';
 
 function PoiDetailsPage() {
   const [POIDetailsData, setPOIDetails] = useState(undefined);
@@ -12,7 +12,7 @@ function PoiDetailsPage() {
     async function fetchData() {
       const fetchedData = await getPOI(urlParams.id);
       if (fetchedData !== null) {
-        fetchedData.imageURL = await getImageByPOI(urlParams.id);
+        fetchedData.imageURL = await getPoiPicture(urlParams.id);
         setPOIDetails(fetchedData);
       } else {
         setPOIDetails(null);
