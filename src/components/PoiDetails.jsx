@@ -7,7 +7,9 @@ import { Box } from '@mui/system';
 import {
   Button, ButtonGroup, CircularProgress, Divider, Grid, Stack, Typography,
 } from '@mui/material';
-import { DeleteOutline, EditOutlined, PhotoCameraFrontOutlined } from '@mui/icons-material';
+import {
+  DeleteOutline, EditOutlined, PhotoCamera,
+} from '@mui/icons-material';
 
 function PoiDetails({ id, data }) {
   console.log(id);
@@ -21,21 +23,44 @@ function PoiDetails({ id, data }) {
       && (
         <Box display="flex" flexDirection="row" justifyContent="center" sx={{ width: '100vw' }}>
           <Box sx={{ width: '40%' }}>
-            <Stack
-              justifyContent="center"
-              alignItems="center"
-            >
-              <img src={data.imageURL} alt={`${data.name} img`} style={{ height: '200px', width: '100%', objectFit: 'cover' }} />
-              <Typography variant="h4">{data.name}</Typography>
-              <Typography variant="body1">{data.description}</Typography>
+            <Stack>
+              <img
+                src={data.imageURL}
+                alt={`${data.name} img`}
+                style={{
+                  height: '18vw',
+                  width: '90%',
+                  objectFit: 'cover',
+                  borderRadius: '1vw',
+                  alignSelf: 'center',
+                }}
+              />
+              <Typography variant="h4" marginTop="1vw" marginBottom="1.5vw" textAlign="center">{data.name}</Typography>
+              <Typography variant="body1" align="justify">{data.description}</Typography>
+              <Box display="flex" justifyContent="left">
+                {data.linkedODD.map((odd) => (
+                  <Typography sx={{
+                    borderStyle: 'solid',
+                    borderRadius: '10px',
+                    borderWidth: 'thin',
+                    color: 'lightskyblue',
+                    padding: '5px',
+                    marginTop: '1vw',
+                    marginBottom: '1vw',
+                  }}
+                  >
+                    ODD
+                    {' '}
+                    {odd}
+                  </Typography>
+                ))}
+              </Box>
               <ButtonGroup>
-                <Button>
+                <Button endIcon={<EditOutlined />} color="info">
                   Modifier
-                  <EditOutlined />
                 </Button>
-                <Button>
+                <Button endIcon={<DeleteOutline />} color="error">
                   Supprimer
-                  <DeleteOutline />
                 </Button>
               </ButtonGroup>
             </Stack>
@@ -45,12 +70,12 @@ function PoiDetails({ id, data }) {
             <Stack
               alignItems="center"
             >
-              <Typography variant="h5">Localisation GPS</Typography>
+              <Typography variant="h5" marginBottom="0.5vw">Localisation GPS</Typography>
               <MapContainer
                 center={[data.coordinates.latitude, data.coordinates.longitude]}
                 zoom={15}
                 scrollWheelZoom
-                style={{ height: '150px', width: '100%' }}
+                style={{ height: '13vw', width: '100%' }}
               >
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -63,15 +88,25 @@ function PoiDetails({ id, data }) {
               </MapContainer>
               {data.question
               && (
-              <Box style={{ textAlign: 'center', alignItems: 'center' }}>
+              <Box
+                marginTop="0.5vw"
+                padding="1vw"
+                paddingTop="0.5vw"
+                border="thin solid lightgrey"
+                style={{
+                  textAlign: 'center',
+                  alignItems: 'center',
+                  width: '100%',
+                }}
+              >
                 <Typography variant="h5">Question</Typography>
-                <Typography variant="body1">{data.question.title}</Typography>
+                <Typography variant="body1" marginBottom="0.5vw">{data.question.title}</Typography>
                 <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 8 }} style={{ alignItems: 'center' }}>
                   <Grid item xs={6}>
                     <Typography
                       variant="h6"
                       style={{
-                        backgroundColor: 'lime',
+                        backgroundColor: 'limegreen',
                         color: 'white',
                         borderRadius: '5px',
                       }}
@@ -84,7 +119,7 @@ function PoiDetails({ id, data }) {
                       <Typography
                         variant="h6"
                         style={{
-                          backgroundColor: 'red',
+                          backgroundColor: 'tomato',
                           color: 'white',
                           borderRadius: '5px',
                         }}
@@ -97,9 +132,19 @@ function PoiDetails({ id, data }) {
               </Box>
               )}
               {data.challenge && (
-              <>
+              <Box
+                marginTop="0.5vw"
+                padding="1vw"
+                paddingTop="0.5vw"
+                border="thin solid lightgrey"
+                style={{
+                  textAlign: 'center',
+                  alignItems: 'center',
+                  width: '100%',
+                }}
+              >
                 {data.challenge.type === 'multipleChoice' && (
-                  <Box textAlign="center">
+                  <Box>
                     <Typography variant="h5">Défi</Typography>
                     <Typography variant="h6">Question a choix multiple</Typography>
                     <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 8 }} style={{ alignItems: 'center' }}>
@@ -107,7 +152,7 @@ function PoiDetails({ id, data }) {
                         <Typography
                           variant="h6"
                           style={{
-                            backgroundColor: 'lime',
+                            backgroundColor: 'limegreen',
                             color: 'white',
                             borderRadius: '5px',
                           }}
@@ -120,7 +165,7 @@ function PoiDetails({ id, data }) {
                           <Typography
                             variant="h6"
                             style={{
-                              backgroundColor: 'red',
+                              backgroundColor: 'tomato',
                               color: 'white',
                               borderRadius: '5px',
                             }}
@@ -133,36 +178,54 @@ function PoiDetails({ id, data }) {
                   </Box>
                 )}
                 {data.challenge.type === 'field' && (
-                  <Box textAlign="center">
+                  <Box display="flex" flexDirection="column">
                     <Typography variant="h5">Défi</Typography>
                     <Typography variant="h6">Question libre</Typography>
-                    <Stack direction="row">
-                      <Typography sx={{ width: '50%' }}>{data.challenge.title}</Typography>
-                      <Typography
-                        variant="h6"
-                        sx={{ width: '50%', justifyContent: 'center' }}
+                    <Typography>{data.challenge.title}</Typography>
+                    <Typography
+                      variant="h6"
+                      textAlign="center"
+                    >
+                      <span
                         style={{
-                          backgroundColor: 'lime',
+                          backgroundColor: 'limegreen',
+                          backgroundSize: 'contain',
                           color: 'white',
                           borderRadius: '5px',
+                          padding: '5px',
                         }}
                       >
                         {data.challenge.goodAnswer}
-                      </Typography>
-                    </Stack>
+                      </span>
+                    </Typography>
                   </Box>
                 )}
                 {data.challenge.type === 'photo' && (
-                  <Box textAlign="center">
+                  <Box>
                     <Typography variant="h5">Défi</Typography>
                     <Typography variant="h6">Prendre une photo</Typography>
                     <Stack direction="row">
-                      <PhotoCameraFrontOutlined sx={{ width: '50%' }} />
-                      <Typography sx={{ width: '50%' }}>{data.challenge.title}</Typography>
+                      <PhotoCamera sx={{ width: '50%', height: '10vw' }} />
+                      <Typography sx={{ width: '50%', alignSelf: 'center' }}>{data.challenge.title}</Typography>
                     </Stack>
                   </Box>
                 )}
-              </>
+              </Box>
+              )}
+              {!data.challenge && (
+                <Box
+                  marginTop="0.5vw"
+                  padding="1vw"
+                  paddingTop="0.5vw"
+                  border="thin solid lightgrey"
+                  style={{
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    width: '100%',
+                  }}
+                >
+                  <Typography color="lightgrey" variant="h3">Pas de défis enregistrés</Typography>
+                </Box>
               )}
             </Stack>
           </Box>
