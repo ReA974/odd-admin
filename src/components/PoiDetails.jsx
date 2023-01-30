@@ -7,7 +7,6 @@ import { Landscape, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import {
   MapContainer, TileLayer, Marker, Popup,
 } from 'react-leaflet';
-import DisplayQuestion from './poi/DisplayQuestion';
 import DisplayChallenge from './poi/DisplayChallenge';
 
 function PoiDetails({
@@ -57,8 +56,8 @@ function PoiDetails({
         </ButtonGroup>
       </Box>
       <Divider orientation="vertical" variant="middle" flexItem sx={{ display: { xs: 'none', md: 'block' } }} />
-      <Box display="flex" flexDirection="column" alignItems="center" sx={{ width: '49%', minWidth: '350px' }}>
-        <Typography variant="h5" marginBottom="0.5vw">Localisation GPS</Typography>
+      <Box display="flex" flexDirection="column" alignItems="center" sx={{ width: '49%', minWidth: '350px', paddingBottom: '10px' }}>
+        <Typography variant="h5" marginBottom="5px">Localisation GPS</Typography>
         <MapContainer
           center={[coordinates.latitude, coordinates.longitude]}
           zoom={15}
@@ -76,7 +75,9 @@ function PoiDetails({
         </MapContainer>
         {question
           && (
-            <DisplayQuestion
+            <DisplayChallenge
+              isChallenge={false}
+              type="multipleChoice"
               title={question.title}
               goodAnswer={question.goodAnswer}
               badAnswers={question.badAnswers}
@@ -85,8 +86,10 @@ function PoiDetails({
         {challenge
           && (
             <DisplayChallenge
+              isChallenge
               type={challenge.type}
               title={challenge.title}
+              imageTitle={challenge.image}
               goodAnswer={challenge.goodAnswer}
               badAnswers={challenge.badAnswers}
             />
@@ -95,7 +98,7 @@ function PoiDetails({
           <Box
             border="thin solid lightgrey"
             borderRadius="5px"
-            marginBottom="10px"
+            marginTop="10px"
             style={{
               textAlign: 'center',
               alignItems: 'center',

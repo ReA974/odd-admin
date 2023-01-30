@@ -34,6 +34,7 @@ function PoiDetailsPage() {
         linkedOdds={POIDetailsData.linkedODD}
         coordinates={POIDetailsData.coordinates}
         question={POIDetailsData.question}
+        challenge={POIDetailsData.challenge}
       />
     </Box>
   );
