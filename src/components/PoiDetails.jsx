@@ -1,18 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Box, Divider, Typography, Avatar, ButtonGroup, Button,
+  Box, Divider, Typography, Avatar, ButtonGroup, Button, DialogActions, DialogTitle, Dialog,
 } from '@mui/material';
 import { Landscape, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import {
   MapContainer, TileLayer, Marker, Popup,
 } from 'react-leaflet';
+import { useNavigate } from 'react-router-dom';
 import DisplayQuestion from './poi/DisplayQuestion';
 import DisplayChallenge from './poi/DisplayChallenge';
+import { deletePoi } from '../services/POIQueries';
 
 function PoiDetails({
-  image, name, description, linkedOdds, coordinates, question, challenge,
+  id, image, name, description, linkedOdds, coordinates, question, challenge,
 }) {
+  const [openDialog, setOpenDialog] = useState(false);
+  const navigate = useNavigate();
+
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
+
+  const handleDelete = () => {
+    handleClose();
+    deletePoi(id);
+    navigate('/poi');
+  };
+
   return (
     <Box display="flex" flexDirection="row" justifyContent="center" flexWrap="wrap" paddingTop="40px" sx={{ width: '100%', maxWidth: '1800px' }}>
       <Box display="flex" flexDirection="column" alignItems="center" sx={{ width: '49%', minWidth: '350px' }}>
@@ -48,13 +67,26 @@ function PoiDetails({
           ))}
         </Box>
         <ButtonGroup sx={{ width: '80%', margin: '20px 0' }}>
-          <Button endIcon={<EditOutlined />} color="info">
+          <Button endIcon={<EditOutlined />} color="info" variant="contained">
             Modifier
           </Button>
-          <Button endIcon={<DeleteOutline />} color="error">
+          <Button onClick={handleClickOpen} endIcon={<DeleteOutline />} color="error" variant="contained">
             Supprimer
           </Button>
         </ButtonGroup>
+        <Dialog
+          open={openDialog}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {`Voulez-vous vraiment supprimer le point d'intéret "${name}" ?`}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={handleClose} autoFocus>Non</Button>
+            <Button onClick={handleDelete} color="error">Oui</Button>
+          </DialogActions>
+        </Dialog>
       </Box>
       <Divider orientation="vertical" variant="middle" flexItem sx={{ display: { xs: 'none', md: 'block' } }} />
       <Box display="flex" flexDirection="column" alignItems="center" sx={{ width: '49%', minWidth: '350px' }}>
@@ -111,6 +143,7 @@ function PoiDetails({
 }
 
 PoiDetails.propTypes = {
+  id: PropTypes.string.isRequired,
   image: PropTypes.string,
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,

@@ -5,6 +5,7 @@ import {
   doc,
   serverTimestamp,
   getDoc,
+  deleteDoc,
 } from '@firebase/firestore';
 import {
   ref,
@@ -99,4 +100,14 @@ export const getPoiPicture = async (id) => {
     console.log(`Error while getting poi image: ${error}`);
   }
   return undefined;
+};
+
+export const deletePoi = async (id) => {
+  try {
+    await deleteDoc(doc(db, 'POI', id));
+  } catch (error) {
+    console.log(`Error while deleting group: ${error}`);
+    return false;
+  }
+  return true;
 };

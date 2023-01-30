@@ -28,6 +28,7 @@ function PoiDetailsPage() {
   return (
     <Box display="flex" justifyContent="center">
       <PoiDetails
+        id={urlParams.id}
         image={POIDetailsData.imageURL}
         name={POIDetailsData.name}
         description={POIDetailsData.description}
