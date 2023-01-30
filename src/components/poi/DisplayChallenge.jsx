@@ -1,107 +1,147 @@
-import React from 'react';
+/* eslint-disable no-nested-ternary */
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Box, Typography, Grid, Stack,
+  Typography, Box, Grid, Avatar,
 } from '@mui/material';
-import { PhotoCamera } from '@mui/icons-material';
+import { getImage } from '../../services/groupQueries';
 
 function DisplayChallenge({
-  type, title, goodAnswer, badAnswers,
+  isChallenge, type, title, imageTitle, badAnswers, goodAnswer,
 }) {
+  const answers = type === 'multipleChoice' ? [goodAnswer, ...badAnswers] : [];
+  const [imageTitleDl, setImageTitleDl] = useState(undefined);
+  const [imageAnswer, setImageAnswer] = useState(undefined);
+
+  useEffect(() => {
+    async function dlImage() {
+      if (imageTitle) {
+        const img = await getImage(imageTitle);
+        setImageTitleDl(img);
+      }
+    }
+    dlImage();
+  }, [imageTitle]);
+
+  useEffect(() => {
+    async function dlImage() {
+      if (goodAnswer) {
+        const img = await getImage(goodAnswer);
+        setImageAnswer(img);
+      }
+    }
+    if (type === 'photo') {
+      dlImage();
+    }
+  }, [goodAnswer]);
+
   return (
     <Box
-      marginTop="0.5vw"
-      padding="1vw"
-      paddingTop="0.5vw"
-      border="thin solid lightgrey"
-      style={{
-        textAlign: 'center',
-        alignItems: 'center',
-        width: '100%',
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-around"
+      alignItems="center"
+      flexWrap="wrap"
+      sx={{
+        border: '1px solid lightgrey',
+        marginTop: '10px',
+        paddingBottom: '10px',
+        borderRadius: '5px',
+        width: '80%',
+        maxWidth: '750px',
+        minWidth: '250px',
       }}
     >
-      {type === 'multipleChoice' && (
-        <Box>
-          <Typography variant="h5">Défi</Typography>
-          <Typography variant="h6">Question a choix multiple</Typography>
-          <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 8 }} style={{ alignItems: 'center' }}>
-            <Grid item xs={6}>
-              <Typography
-                variant="h6"
-                style={{
-                  backgroundColor: 'limegreen',
-                  color: 'white',
-                  borderRadius: '5px',
-                }}
-              >
-                {goodAnswer}
-              </Typography>
-            </Grid>
-            {badAnswers.map((answer) => (
-              <Grid item xs={6}>
+      <Typography variant="h6" margin="5px">{isChallenge ? 'Défi' : 'Question'}</Typography>
+      { imageTitle
+        && (
+        <Avatar
+          src={imageTitleDl}
+          sx={{
+            height: '30vw',
+            width: '35vw',
+            minWidth: '250px',
+            maxWidth: '200px',
+            maxHeight: '110px',
+            minHeight: '200px',
+            margin: '5px',
+          }}
+          variant="rounded"
+        />
+        )}
+      <Box display="flex" flexDirection="column" alignItems="center" width="100%">
+        <Typography variant="subtitle1" sx={{ fontWeight: 'bold', marginBottom: '5px' }} textAlign="center">{title}</Typography>
+        {type === 'multipleChoice'
+        && (
+        <Grid container spacing={1} sx={{ width: '90%' }} display="flex" justifyContent="center" flexWrap="wrap">
+          {
+            answers.map((answer) => (
+              <Grid key={answer} item xs={6} sx={{ width: '100px', padding: '5px', minWidth: '200px' }}>
                 <Typography
-                  variant="h6"
-                  style={{
-                    backgroundColor: 'tomato',
-                    color: 'white',
+                  textAlign="center"
+                  sx={{
+                    background: `${answer === goodAnswer ? '#1DD75BFF' : '#F22128BF'}`,
                     borderRadius: '5px',
+                    padding: '5px 0',
                   }}
                 >
                   {answer}
                 </Typography>
               </Grid>
-            ))}
-          </Grid>
-        </Box>
-      )}
-      {type === 'field' && (
-        <Box display="flex" flexDirection="column">
-          <Typography variant="h5">Défi</Typography>
-          <Typography variant="h6">Question libre</Typography>
-          <Typography>{title}</Typography>
+            ))
+          }
+        </Grid>
+        )}
+        {type === 'field'
+        && (
           <Typography
-            variant="h6"
             textAlign="center"
+            sx={{
+              background: '#1DD75BFF',
+              borderRadius: '5px',
+              padding: '5px',
+              marginBottom: '5px',
+            }}
           >
-            <span
-              style={{
-                backgroundColor: 'limegreen',
-                backgroundSize: 'contain',
-                color: 'white',
-                borderRadius: '5px',
-                padding: '5px',
-              }}
-            >
-              {goodAnswer}
-            </span>
+            {goodAnswer}
           </Typography>
-        </Box>
-      )}
-      {type === 'photo' && (
-        <Box>
-          <Typography variant="h5">Défi</Typography>
-          <Typography variant="h6">Prendre une photo</Typography>
-          <Stack direction="row">
-            <PhotoCamera sx={{ width: '50%', height: '10vw' }} />
-            <Typography sx={{ width: '50%', alignSelf: 'center' }}>{title}</Typography>
-          </Stack>
-        </Box>
-      )}
+        )}
+        { imageAnswer
+          && (
+          <Avatar
+            src={imageAnswer}
+            sx={{
+              height: '30vw',
+              width: '35vw',
+              minWidth: '250px',
+              maxWidth: '200px',
+              maxHeight: '110px',
+              minHeight: '200px',
+              margin: '5px',
+            }}
+            variant="rounded"
+          />
+          )}
+      </Box>
     </Box>
   );
 }
 
 DisplayChallenge.propTypes = {
+  isChallenge: PropTypes.bool,
   type: PropTypes.oneOf(['multipleChoice', 'field', 'photo']).isRequired,
   title: PropTypes.string,
+  imageTitle: PropTypes.string,
+  badAnswers: PropTypes.instanceOf(Array),
   goodAnswer: PropTypes.string,
-  badAnswers: PropTypes.arrayOf(PropTypes.string),
 };
 
 DisplayChallenge.defaultProps = {
-  title: '',
-  goodAnswer: '',
-  badAnswers: [],
+  isChallenge: false,
+  title: undefined,
+  imageTitle: undefined,
+  badAnswers: undefined,
+  goodAnswer: undefined,
 };
 
 export default DisplayChallenge;
