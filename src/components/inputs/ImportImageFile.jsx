@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import ImageIcon from '@mui/icons-material/Image';
 
-function ImportImageFile({ setImgFile }) {
+function ImportImageFile({ setImgFile, labelId }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [currentImg, setCurrentImg] = useState('');
 
@@ -17,7 +17,7 @@ function ImportImageFile({ setImgFile }) {
 
   return (
     <Box display="flex" justifyContent="center">
-      <label htmlFor="imgupload">
+      <label htmlFor={labelId}>
         <Avatar
           alt=""
           src={currentImg}
@@ -25,20 +25,24 @@ function ImportImageFile({ setImgFile }) {
           sx={{
             height: '30vw',
             width: '35vw',
-            minWidth: '250px',
+            minWidth: '200px',
             maxWidth: '600px',
             maxHeight: '330px',
-            minHeight: '200px',
+            minHeight: '170px',
+            marginBottom: '10px',
           }}
         >
-          <ImageIcon sx={{ width: 200, height: 'auto' }} />
+          <ImageIcon sx={{
+            width: 150, minWidth: 100, height: 'auto',
+          }}
+          />
         </Avatar>
         <input
           onChange={handleChange}
           type="file"
           accept="image/png, image/jpeg"
           name="picture"
-          id="imgupload"
+          id={labelId}
           hidden
         />
       </label>
@@ -49,6 +53,7 @@ function ImportImageFile({ setImgFile }) {
 
 ImportImageFile.propTypes = {
   setImgFile: PropTypes.func.isRequired,
+  labelId: PropTypes.string.isRequired,
 };
 
 export default ImportImageFile;

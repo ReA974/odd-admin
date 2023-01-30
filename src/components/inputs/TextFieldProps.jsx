@@ -3,9 +3,9 @@ import { TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 
 function TextFieldProps({
-  id, label, variant, type, helperText, required,
-  value, setValueComponent, error, width, maxLength, placeHolder,
-  margin, color, marginTop, marginLeft, marginRight, maxWidth,
+  id, label, variant, type, helperText, required, value,
+  setValueComponent, error, width, maxLength, placeHolder, margin,
+  color, marginTop, marginLeft, marginRight, maxWidth, minWidth, marginBottom,
 }) {
   return (
     required
@@ -18,7 +18,7 @@ function TextFieldProps({
           value={value}
           error={error}
           sx={{
-            width, margin, marginTop, marginLeft, marginRight, maxWidth,
+            width, margin, marginTop, marginLeft, marginRight, maxWidth, minWidth, marginBottom,
           }}
           color={color}
           helperText={helperText}
@@ -37,7 +37,7 @@ function TextFieldProps({
           value={value}
           error={error}
           sx={{
-            width, margin, marginTop, marginLeft, marginRight, maxWidth,
+            width, margin, marginTop, marginLeft, marginRight, maxWidth, minWidth, marginBottom,
           }}
           color={color}
           helperText={helperText}
@@ -68,6 +68,8 @@ TextFieldProps.propTypes = {
   marginLeft: PropTypes.string,
   marginRight: PropTypes.string,
   maxWidth: PropTypes.string,
+  minWidth: PropTypes.string,
+  marginBottom: PropTypes.string,
 };
 
 TextFieldProps.defaultProps = {
@@ -87,6 +89,8 @@ TextFieldProps.defaultProps = {
   marginLeft: null,
   marginRight: null,
   maxWidth: null,
+  minWidth: null,
+  marginBottom: null,
 };
 
 export default TextFieldProps;

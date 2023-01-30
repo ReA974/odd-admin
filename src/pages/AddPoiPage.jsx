@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import { GeoPoint } from '@firebase/firestore';
 import Compressor from 'compressorjs';
+import { v4 as uuidv4 } from 'uuid';
 import TextFieldProps from '../components/inputs/TextFieldProps';
 import TextAreaProps from '../components/inputs/TextAreaProps';
 import ButtonProps from '../components/inputs/ButtonProps';
@@ -12,7 +13,8 @@ import SelectObjectProps from '../components/inputs/SelectObjectProps';
 import { addPoi, setPoiPicture } from '../services/POIQueries';
 import getAllODD from '../services/ODDQueries';
 import ImportImageFile from '../components/inputs/ImportImageFile';
-import PoiQuestion from '../components/PoiQuestion';
+import PoiQuestion from '../components/poi/PoiQuestion';
+import AddChallengePage from './AddChallengePage';
 
 function AddPoiPage() {
   const [name, setName] = useState();
@@ -27,6 +29,7 @@ function AddPoiPage() {
   const [badAnswerOne, setBadAnswerOne] = useState();
   const [badAnswerTwo, setBadAnswerTwo] = useState();
   const [badAnswerThree, setBadAnswerThree] = useState();
+  const [challenge, setChallenge] = useState();
   const [errorName, setErrorName] = useState(false);
   const [errorLatitude, setErrorLatitude] = useState(false);
   const [errorLongitude, setErrorLongitude] = useState(false);
@@ -44,15 +47,15 @@ function AddPoiPage() {
     }
     fetchData();
   }, []);
-
-  const saveImg = (poiId) => {
+  const saveImg = (poiId, url, file) => {
     // eslint-disable-next-line no-new
-    new Compressor(imgFile, {
+    new Compressor(file, {
       quality: 0.6,
       success: async (compressedResult) => {
-        const response = await setPoiPicture(poiId, compressedResult);
+        const response = await setPoiPicture(poiId, compressedResult, url);
         if (response[0]) {
           setPicture(URL.createObjectURL(compressedResult));
+          console.log(picture);
         } else {
           setErrorMessage('Une erreur est survenue, réessayez');
         }
@@ -60,6 +63,7 @@ function AddPoiPage() {
     });
   };
 
+  console.log(challenge);
   const handleAddPoi = async () => {
     const regex = /^(-?[1-8]?\d(?:\.\d{1,18})?|90(?:\.0{1,18})?)$/;
     if (name === '') {
@@ -88,8 +92,32 @@ function AddPoiPage() {
       badAnswers.push(badAnswerThree);
       question.badAnswers = badAnswers;
       setQuestion({ ...question });
-      const result = await addPoi(name, description, linkedOdd, geoPoint, question);
-      saveImg(result.id);
+      let tempImg;
+      let tempUuid;
+      if (challenge && challenge.challenge) {
+        if (challenge.challenge.type && challenge.challenge.type === 'photo' && challenge.challenge.goodAnswer) {
+          tempImg = challenge.challenge.goodAnswer;
+          tempUuid = uuidv4();
+          challenge.challenge.goodAnswer = `CHALLENGE/${tempUuid}`;
+        }
+        if (challenge.challenge.image) {
+          tempImg = challenge.challenge.image;
+          tempUuid = uuidv4();
+          challenge.challenge.image = `CHALLENGE/${tempUuid}`;
+        }
+      }
+      const result = await addPoi(
+        name,
+        description,
+        linkedOdd,
+        geoPoint,
+        question,
+        challenge.challenge,
+      );
+      saveImg(result.id, 'POI', imgFile);
+      if (challenge && challenge.challenge && (challenge.challenge.image || challenge.challenge.type === 'photo')) {
+        saveImg(tempUuid, 'CHALLENGE', tempImg);
+      }
       setErrorLongitude(false);
       setErrorLatitude(false);
       setErrorName(false);
@@ -125,7 +153,7 @@ function AddPoiPage() {
         }}
         >
           <ImportImageFile
-            picture={picture}
+            labelId="poiImg"
             setImgFile={(file) => setImgFile(file)}
           />
         </Box>
@@ -183,18 +211,36 @@ function AddPoiPage() {
         </Box>
       </Box>
       <Box sx={{
-        display: 'flex', flexDirection: 'column', justifyContent: 'center', marginTop: '10px',
+        display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '10px',
       }}
       >
-        <PoiQuestion
-          setParentValues={setQuestion}
-          badAnswerOne={badAnswerOne}
-          setBadAnswerOne={(value) => setBadAnswerOne(value)}
-          badAnswerTwo={badAnswerTwo}
-          setBadAnswerTwo={(value) => setBadAnswerTwo(value)}
-          badAnswerThree={badAnswerThree}
-          setBadAnswerThree={(value) => setBadAnswerThree(value)}
-        />
+        <Box sx={{
+          width: '60vw',
+          marginTop: '20px',
+          border: '1px solid lightgrey',
+          padding: '10px 0px',
+          borderRadius: '15px',
+        }}
+        >
+          <PoiQuestion
+            setParentValues={setQuestion}
+            badAnswerOne={badAnswerOne}
+            setBadAnswerOne={(value) => setBadAnswerOne(value)}
+            badAnswerTwo={badAnswerTwo}
+            setBadAnswerTwo={(value) => setBadAnswerTwo(value)}
+            badAnswerThree={badAnswerThree}
+            setBadAnswerThree={(value) => setBadAnswerThree(value)}
+          />
+        </Box>
+        <Box sx={{
+          marginTop: '20px',
+          border: '1px solid lightgrey',
+          padding: '10px 0px',
+          borderRadius: '15px',
+        }}
+        >
+          <AddChallengePage challenge={challenge} setChallenge={setChallenge} />
+        </Box>
         {
           errorMessage !== '' && <Typography color="error">{errorMessage}</Typography>
         }
