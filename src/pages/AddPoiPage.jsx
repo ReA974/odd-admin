@@ -20,11 +20,11 @@ import PoiQuestion from '../components/poi/PoiQuestion';
 import AddChallengePage from './AddChallengePage';
 
 function AddPoiPage() {
-  const [name, setName] = useState();
-  const [description, setDescription] = useState();
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [linkedOdd, setLinkedOdd] = useState([]);
-  const [latitude, setLatitude] = useState();
-  const [longitude, setLongitude] = useState();
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
   const [picture, setPicture] = useState('');
   const [imgFile, setImgFile] = useState('');
   const [question, setQuestion] = useState();
@@ -42,6 +42,18 @@ function AddPoiPage() {
   const [update, setUpdate] = useState(false);
   const urlParams = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (errorName === true) {
+      setErrorName(false);
+    }
+    if (errorLongitude === true) {
+      setErrorLongitude(false);
+    }
+    if (errorLatitude === true) {
+      setErrorLatitude(false);
+    }
+  }, [name, latitude, longitude]);
 
   useEffect(() => {
     async function fetchDataOdd() {
@@ -91,8 +103,11 @@ function AddPoiPage() {
         }
       }
     }
-    fetchDataPoi();
+    if (urlParams.id) {
+      fetchDataPoi();
+    }
   }, []);
+
   const saveImg = (poiId, url, file) => {
     // eslint-disable-next-line no-new
     new Compressor(file, {
@@ -107,13 +122,14 @@ function AddPoiPage() {
   };
 
   const handleAddPoi = async () => {
+    setErrorMessage('');
     const regex = /^(-?[1-8]?\d(?:\.\d{1,18})?|90(?:\.0{1,18})?)$/;
     if (name === '') {
       setErrorName(true);
       setErrorMessage('Veuillez renseigner un nom de POI');
     } else if (description === '') {
       setErrorMessage('Veuillez renseigner une description du POI');
-    } else if (linkedOdd === []) {
+    } else if (linkedOdd.length === 0) {
       setErrorMessage('Veuillez renseigner un ou plusieurs ODD lié(s) au POI');
     } else if (latitude === '') {
       setErrorLatitude(true);
@@ -127,6 +143,10 @@ function AddPoiPage() {
     } else if (!regex.test(longitude)) {
       setErrorLongitude(true);
       setErrorMessage('Veuillez renseigner la longitude seulement avec des chiffres et un point');
+    } else if (question === undefined || (question && Object.keys(question).length === 0)) {
+      setErrorMessage('Veuillez renseigner les champs associés à la question');
+    } else if (challenge === undefined || (challenge && Object.keys(challenge).length === 0)) {
+      setErrorMessage('Veuillez renseigner les champs associés au défi');
     } else {
       const geoPoint = new GeoPoint(Number(latitude), Number(longitude));
       badAnswers.push(badAnswerOne);
@@ -227,7 +247,7 @@ function AddPoiPage() {
         >
           <ImportImageFile
             labelId="poiImg"
-            image={picture}
+            image={picture && picture}
             setImgFile={(file) => setImgFile(file)}
           />
         </Box>
@@ -250,7 +270,7 @@ function AddPoiPage() {
           <TextFieldProps
             label="Nom"
             required
-            value={name}
+            value={name && name}
             error={errorName}
             maxLength="40"
             setValueComponent={setName}
@@ -258,27 +278,27 @@ function AddPoiPage() {
           <TextAreaProps
             placeholder="Description"
             minRows={3}
-            value={description}
+            value={description && description}
             setValueComponent={setDescription}
           />
           <SelectObjectProps
             dataSelectable={ODDListData}
             setValueComponent={setLinkedOdd}
-            valueComponent={linkedOdd}
+            valueComponent={linkedOdd && linkedOdd}
             label="ODD liés"
             multiple
           />
           <TextFieldProps
             label="Latitude"
             required
-            value={latitude}
+            value={latitude && latitude}
             error={errorLatitude}
             setValueComponent={setLatitude}
           />
           <TextFieldProps
             label="Longitude"
             required
-            value={longitude}
+            value={longitude && longitude}
             error={errorLongitude}
             setValueComponent={setLongitude}
           />
@@ -314,7 +334,7 @@ function AddPoiPage() {
           borderRadius: '15px',
         }}
         >
-          <AddChallengePage challenge={challenge} setChallenge={setChallenge} />
+          <AddChallengePage challenge={challenge && challenge} setChallenge={setChallenge} />
         </Box>
         {
           errorMessage !== '' && <Typography color="error">{errorMessage}</Typography>
