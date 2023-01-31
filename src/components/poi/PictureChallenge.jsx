@@ -26,6 +26,7 @@ function PictureChallenge({ setChallenge, challenge }) {
       />
       <ImportImageFile
         setImgFile={(value) => setPicture(value)}
+        image={challenge && challenge.goodAnswer}
         labelId="imgPictureChallenge"
       />
     </Box>

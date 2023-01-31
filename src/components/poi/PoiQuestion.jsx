@@ -7,11 +7,20 @@ import ImportImageFile from '../inputs/ImportImageFile';
 function PoiQuestion({
   setParentValues, badAnswerOne, badAnswerTwo, badAnswerThree,
   setBadAnswerOne, setBadAnswerTwo, setBadAnswerThree, typeTitle,
+  parentValues,
 }) {
-  const [question, setQuestion] = useState();
+  const [question, setQuestion] = useState(parentValues);
 
   useEffect(() => {
-    setParentValues({ ...question });
+    if (parentValues) {
+      setQuestion(parentValues);
+    }
+  }, [parentValues]);
+
+  useEffect(() => {
+    if ((parentValues && question !== parentValues) || parentValues === undefined) {
+      setParentValues({ ...question });
+    }
   }, [question]);
 
   return (
@@ -36,7 +45,7 @@ function PoiQuestion({
       }}
       >
         {
-          (typeTitle === 'Texte' || typeTitle === '')
+          (typeTitle === 'Texte' || typeTitle === undefined)
           && (
             <TextFieldProps
               label="Intitulé"
@@ -53,6 +62,7 @@ function PoiQuestion({
           && (
             <ImportImageFile
               setImgFile={(value) => setQuestion({ ...question, image: value })}
+              image={question && question.image}
               labelId="QuizzChallenge"
             />
           )
@@ -63,6 +73,7 @@ function PoiQuestion({
             <Box display="flex" alignItems="center" flexWrap="wrap" justifyContent="center">
               <ImportImageFile
                 setImgFile={(value) => setQuestion({ ...question, image: value })}
+                image={question && question.image}
                 labelId="QuizzChallenge"
               />
               <TextFieldProps
@@ -77,7 +88,6 @@ function PoiQuestion({
             </Box>
           )
         }
-
         <Box sx={{
           display: 'flex',
           flexDirection: 'row',
@@ -109,7 +119,7 @@ function PoiQuestion({
               <TextFieldProps
                 label="Mauvaise réponse 1"
                 setValueComponent={(value) => setBadAnswerOne(value)}
-                value={badAnswerOne}
+                value={badAnswerOne && badAnswerOne}
                 color="error"
                 required
               />
@@ -118,7 +128,7 @@ function PoiQuestion({
               <TextFieldProps
                 label="Mauvaise réponse 2"
                 setValueComponent={(value) => setBadAnswerTwo(value)}
-                value={badAnswerTwo}
+                value={badAnswerTwo && badAnswerTwo}
                 color="error"
                 required
               />
@@ -127,7 +137,7 @@ function PoiQuestion({
               <TextFieldProps
                 label="Mauvaise réponse 3"
                 setValueComponent={(value) => setBadAnswerThree(value)}
-                value={badAnswerThree}
+                value={badAnswerThree && badAnswerThree}
                 color="error"
                 required
               />
@@ -147,6 +157,7 @@ PoiQuestion.propTypes = {
   badAnswerOne: PropTypes.string,
   badAnswerTwo: PropTypes.string,
   badAnswerThree: PropTypes.string,
+  parentValues: PropTypes.instanceOf(Object),
   typeTitle: PropTypes.string,
 };
 
@@ -154,7 +165,8 @@ PoiQuestion.defaultProps = {
   badAnswerOne: '',
   badAnswerTwo: '',
   badAnswerThree: '',
-  typeTitle: '',
+  typeTitle: undefined,
+  parentValues: undefined,
 };
 
 export default PoiQuestion;

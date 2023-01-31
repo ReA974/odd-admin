@@ -7,7 +7,7 @@ import { Landscape, DeleteOutline, EditOutlined } from '@mui/icons-material';
 import {
   MapContainer, TileLayer, Marker, Popup,
 } from 'react-leaflet';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import DisplayChallenge from './poi/DisplayChallenge';
 import { deletePoi } from '../services/POIQueries';
 
@@ -66,7 +66,7 @@ function PoiDetails({
           ))}
         </Box>
         <ButtonGroup sx={{ width: '80%', margin: '20px 0' }}>
-          <Button endIcon={<EditOutlined />} color="info" variant="contained">
+          <Button endIcon={<EditOutlined />} color="info" variant="contained" component={RouterLink} to={`/editPoi/${id}`}>
             Modifier
           </Button>
           <Button onClick={handleClickOpen} endIcon={<DeleteOutline />} color="error" variant="contained">

@@ -12,6 +12,10 @@ function QuizzChallenge({ setChallenge, challenge }) {
   const [badAnswers] = useState([]);
 
   useEffect(() => {
+    setChallenge({ ...challenge, type: 'multipleChoice' });
+  }, []);
+
+  useEffect(() => {
     if (badAnswerOne) {
       badAnswers[0] = badAnswerOne;
     }
@@ -21,14 +25,31 @@ function QuizzChallenge({ setChallenge, challenge }) {
     if (badAnswerThree) {
       badAnswers[2] = badAnswerThree;
     }
-    if (badAnswers.length !== 3) {
+    if (badAnswers.length === 3) {
       setChallenge({
-        ...challenge, badAnswers, type: 'multipleChoice',
+        ...challenge, badAnswers,
       });
     }
   }, [badAnswerOne, badAnswerTwo, badAnswerThree]);
 
-  console.log(challenge);
+  useEffect(() => {
+    if (challenge && titleType === undefined) {
+      if (challenge.image && challenge.title) {
+        setTitleType('Les deux');
+      }
+      if (challenge.image && !challenge.title) {
+        setTitleType('Image');
+      }
+      if (challenge.title && !challenge.image) {
+        setTitleType('Texte');
+      }
+    }
+    if (challenge && challenge.badAnswers) {
+      setBadAnswerOne(challenge.badAnswers[0]);
+      setBadAnswerTwo(challenge.badAnswers[1]);
+      setBadAnswerThree(challenge.badAnswers[2]);
+    }
+  }, [challenge]);
 
   const titleSelectable = {
     1: {
@@ -60,11 +81,12 @@ function QuizzChallenge({ setChallenge, challenge }) {
           && (
             <PoiQuestion
               setParentValues={setChallenge}
-              badAnswerOne={badAnswerOne}
+              parentValues={challenge && challenge}
+              badAnswerOne={badAnswerOne && badAnswerOne}
               setBadAnswerOne={(value) => setBadAnswerOne(value)}
-              badAnswerTwo={badAnswerTwo}
+              badAnswerTwo={badAnswerTwo && badAnswerTwo}
               setBadAnswerTwo={(value) => setBadAnswerTwo(value)}
-              badAnswerThree={badAnswerThree}
+              badAnswerThree={badAnswerThree && badAnswerThree}
               setBadAnswerThree={(value) => setBadAnswerThree(value)}
               typeTitle={titleType}
             />
