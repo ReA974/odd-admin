@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Avatar, Box, Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import ImageIcon from '@mui/icons-material/Image';
+import { getImage } from '../../services/groupQueries';
 
-function ImportImageFile({ setImgFile, labelId }) {
+function ImportImageFile({ setImgFile, labelId, image }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [currentImg, setCurrentImg] = useState('');
+
+  useEffect(() => {
+    async function dlImage() {
+      if (image && typeof image === 'string') {
+        const img = await getImage(image);
+        setCurrentImg(img);
+      }
+    }
+    dlImage();
+  }, [image]);
 
   const handleChange = async (event) => {
     setErrorMessage('');
@@ -54,6 +65,11 @@ function ImportImageFile({ setImgFile, labelId }) {
 ImportImageFile.propTypes = {
   setImgFile: PropTypes.func.isRequired,
   labelId: PropTypes.string.isRequired,
+  image: PropTypes.string,
+};
+
+ImportImageFile.defaultProps = {
+  image: undefined,
 };
 
 export default ImportImageFile;

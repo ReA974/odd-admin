@@ -28,32 +28,37 @@ function AddChallengePage({ challenge, setChallenge }) {
   useEffect(() => {
     if (challenge && challenge.type) {
       switch (challenge.type) {
-        case 'picture':
+        case 'photo':
           setChallengeType('Prendre une photo');
+          if ((challenge && pictureChallenge !== challenge) || challenge === undefined) {
+            setPictureChallenge({ challenge });
+          }
           break;
         case 'multipleChoice':
           setChallengeType('Quizz');
+          if ((challenge && quizzChallenge !== challenge) || challenge === undefined) {
+            setQuizzChallenge({ challenge });
+          }
           break;
-        case 'question':
+        case 'field':
           setChallengeType('Question');
+          if ((challenge && questionChallenge !== challenge) || challenge === undefined) {
+            setQuestionChallenge({ challenge });
+          }
           break;
         default:
           break;
       }
     }
   }, [challenge]);
-
   useEffect(() => {
-    if (pictureChallenge) {
-      setChallenge({});
+    if (pictureChallenge && Object.keys(pictureChallenge.challenge).length !== 0) {
       setChallenge(pictureChallenge);
     }
-    if (questionChallenge) {
-      setChallenge({});
+    if (questionChallenge && Object.keys(questionChallenge.challenge).length !== 0) {
       setChallenge(questionChallenge);
     }
-    if (quizzChallenge) {
-      setChallenge({});
+    if ((quizzChallenge && Object.keys(quizzChallenge.challenge).length !== 0)) {
       setChallenge(quizzChallenge);
     }
   }, [pictureChallenge, questionChallenge, quizzChallenge]);

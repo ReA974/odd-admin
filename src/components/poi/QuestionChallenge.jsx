@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
 import SelectStringProps from '../inputs/SelectStringProps';
@@ -18,6 +18,21 @@ function QuestionChallenge({ setChallenge, challenge }) {
       name: 'Les deux',
     },
   };
+
+  useEffect(() => {
+    if (challenge) {
+      if (challenge.image && challenge.title) {
+        setTitleType('Les deux');
+      }
+      if (challenge.image && !challenge.title) {
+        setTitleType('Image');
+      }
+      if (challenge.title && !challenge.image) {
+        setTitleType('Texte');
+      }
+    }
+  }, [challenge]);
+
   return (
     <Box sx={{
       display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
@@ -57,6 +72,7 @@ function QuestionChallenge({ setChallenge, challenge }) {
           && (
             <ImportImageFile
               setImgFile={(value) => setChallenge({ ...challenge, image: value })}
+              image={challenge && challenge.image}
               labelId="QuizzChallenge"
             />
           )
@@ -67,6 +83,7 @@ function QuestionChallenge({ setChallenge, challenge }) {
             <Box display="flex" alignItems="center" flexWrap="wrap" justifyContent="center">
               <ImportImageFile
                 setImgFile={(value) => setChallenge({ ...challenge, image: value })}
+                image={challenge && challenge.image}
                 labelId="QuizzChallenge"
               />
               <TextFieldProps

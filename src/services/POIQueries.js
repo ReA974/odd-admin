@@ -1,5 +1,6 @@
 import {
   addDoc,
+  updateDoc,
   collection,
   getDocs,
   doc,
@@ -54,7 +55,34 @@ export const addPoi = async (name, description, linkedODD, coordinates, question
     });
     return { id: poi.id };
   } catch (error) {
-    console.log(`Error while adding group: ${error}`);
+    console.log(`Error while adding poi: ${error}`);
+    return null;
+  }
+};
+
+export const updatePoi = async (
+  id,
+  name,
+  description,
+  linkedODD,
+  coordinates,
+  question,
+  challenge,
+) => {
+  const poi = doc(db, '/POI', id);
+  try {
+    await updateDoc(poi, {
+      name,
+      description,
+      linkedODD,
+      coordinates,
+      question,
+      challenge,
+      updated: serverTimestamp(),
+    });
+    return { id };
+  } catch (error) {
+    console.log(`Error while updating poi: ${error}`);
     return null;
   }
 };
