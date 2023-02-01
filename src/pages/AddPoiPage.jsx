@@ -275,6 +275,7 @@ function AddPoiPage() {
     setErrorName(false);
     setErrorMessage('');
   };
+  console.log(challenge);
 
   if (ODDListData === undefined) {
     return (
