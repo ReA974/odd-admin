@@ -60,7 +60,7 @@ function QuestionChallenge({ setChallenge, challenge }) {
             <TextFieldProps
               label="Intitulé"
               value={challenge && challenge.title}
-              setValueComponent={(value) => setChallenge({ ...challenge, title: value })}
+              setValueComponent={(value) => setChallenge({ ...challenge, title: value, type: 'field' })}
               width="50vw"
               minWidth="25vw"
               required
@@ -71,7 +71,7 @@ function QuestionChallenge({ setChallenge, challenge }) {
           titleType === 'Image'
           && (
             <ImportImageFile
-              setImgFile={(value) => setChallenge({ ...challenge, image: value })}
+              setImgFile={(value) => setChallenge({ ...challenge, image: value, type: 'field' })}
               image={challenge && challenge.image}
               labelId="QuizzChallenge"
             />
@@ -82,14 +82,14 @@ function QuestionChallenge({ setChallenge, challenge }) {
           && (
             <Box display="flex" alignItems="center" flexWrap="wrap" justifyContent="center">
               <ImportImageFile
-                setImgFile={(value) => setChallenge({ ...challenge, image: value })}
+                setImgFile={(value) => setChallenge({ ...challenge, image: value, type: 'field' })}
                 image={challenge && challenge.image}
                 labelId="QuizzChallenge"
               />
               <TextFieldProps
                 label="Intitulé"
                 value={challenge && challenge.title}
-                setValueComponent={(value) => setChallenge({ ...challenge, title: value })}
+                setValueComponent={(value) => setChallenge({ ...challenge, title: value, type: 'field' })}
                 width="50vw"
                 minWidth="25vw"
                 marginTop="10px"

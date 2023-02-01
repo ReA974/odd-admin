@@ -12,10 +12,6 @@ function QuizzChallenge({ setChallenge, challenge }) {
   const [badAnswers] = useState([]);
 
   useEffect(() => {
-    setChallenge({ ...challenge, type: 'multipleChoice' });
-  }, []);
-
-  useEffect(() => {
     if (badAnswerOne) {
       badAnswers[0] = badAnswerOne;
     }
@@ -26,9 +22,7 @@ function QuizzChallenge({ setChallenge, challenge }) {
       badAnswers[2] = badAnswerThree;
     }
     if (badAnswers.length === 3) {
-      setChallenge({
-        ...challenge, badAnswers,
-      });
+      setChallenge({ ...challenge, badAnswers, type: 'multipleChoice' });
     }
   }, [badAnswerOne, badAnswerTwo, badAnswerThree]);
 

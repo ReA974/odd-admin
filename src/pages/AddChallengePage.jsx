@@ -18,10 +18,10 @@ function AddChallengePage({ challenge, setChallenge }) {
       name: 'Prendre une photo',
     },
     2: {
-      name: 'Quizz',
+      name: 'Question à choix multiple',
     },
     3: {
-      name: 'Question',
+      name: 'Question à réponse libre',
     },
   };
 
@@ -35,13 +35,13 @@ function AddChallengePage({ challenge, setChallenge }) {
           }
           break;
         case 'multipleChoice':
-          setChallengeType('Quizz');
+          setChallengeType('Question à choix multiple');
           if ((challenge && quizzChallenge !== challenge) || challenge === undefined) {
             setQuizzChallenge({ challenge });
           }
           break;
         case 'field':
-          setChallengeType('Question');
+          setChallengeType('Question à réponse libre');
           if ((challenge && questionChallenge !== challenge) || challenge === undefined) {
             setQuestionChallenge({ challenge });
           }
@@ -104,7 +104,7 @@ function AddChallengePage({ challenge, setChallenge }) {
           )
         }
         {
-          challengeType && challengeType === 'Quizz'
+          challengeType && challengeType === 'Question à choix multiple'
           && (
             <QuizzChallenge
               setChallenge={
@@ -115,7 +115,7 @@ function AddChallengePage({ challenge, setChallenge }) {
           )
         }
         {
-          challengeType && challengeType === 'Question'
+          challengeType && challengeType === 'Question à réponse libre'
           && (
             <QuestionChallenge
               setChallenge={
