@@ -77,7 +77,7 @@ function ChallengeAnswerCard({
                 <Typography
                   textAlign="center"
                   sx={{
-                    background: `${answer === groupAnswer ? isCorrect ? '#1DD75BFF' : '#F22128BF' : ''}`,
+                    background: `${answer.toUpperCase() === groupAnswer.toUpperCase() ? isCorrect ? '#1DD75BFF' : '#F22128BF' : ''}`,
                     borderRadius: '5px',
                     padding: '5px 0',
                   }}
@@ -94,7 +94,7 @@ function ChallengeAnswerCard({
           <Typography
             textAlign="center"
             sx={{
-              background: `${goodAnswer === groupAnswer ? isCorrect ? '#1DD75BFF' : '#F22128BF' : ''}`,
+              background: `${isCorrect ? '#1DD75BFF' : '#F22128BF'}`,
               borderRadius: '5px',
               padding: '5px',
               marginBottom: '5px',
