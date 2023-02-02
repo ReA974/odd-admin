@@ -12,7 +12,7 @@ function PoiQuestion({
   const [question, setQuestion] = useState(parentValues);
 
   useEffect(() => {
-    if (parentValues) {
+    if (parentValues && typeTitle === undefined) {
       setQuestion(parentValues);
     }
   }, [parentValues]);
@@ -29,7 +29,7 @@ function PoiQuestion({
     }}
     >
       {
-        typeTitle === ''
+        typeTitle === undefined
         && (
           <Typography>Question</Typography>
         )

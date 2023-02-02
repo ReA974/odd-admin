@@ -39,9 +39,15 @@ function QuizzChallenge({ setChallenge, challenge }) {
       }
     }
     if (challenge && challenge.badAnswers) {
-      setBadAnswerOne(challenge.badAnswers[0]);
-      setBadAnswerTwo(challenge.badAnswers[1]);
-      setBadAnswerThree(challenge.badAnswers[2]);
+      if (badAnswerOne !== challenge.badAnswers[0]) {
+        setBadAnswerOne(challenge.badAnswers[0]);
+      }
+      if (badAnswerOne !== challenge.badAnswers[1]) {
+        setBadAnswerTwo(challenge.badAnswers[1]);
+      }
+      if (badAnswerOne !== challenge.badAnswers[2]) {
+        setBadAnswerThree(challenge.badAnswers[2]);
+      }
     }
   }, [challenge]);
 

@@ -51,6 +51,7 @@ function AddChallengePage({ challenge, setChallenge }) {
       }
     }
   }, [challenge]);
+
   useEffect(() => {
     if (pictureChallenge && Object.keys(pictureChallenge.challenge).length !== 0) {
       if (challenge && challenge.challenge) {
@@ -67,11 +68,13 @@ function AddChallengePage({ challenge, setChallenge }) {
           // eslint-disable-next-line
           delete challenge.challenge[chal];
         });
+        // eslint-disable-next-line
+        delete challenge.challenge;
       }
       setChallenge(questionChallenge);
     }
-    if ((quizzChallenge && Object.keys(quizzChallenge.challenge).length !== 0)) {
-      if (challenge && challenge.challenge) {
+    if (quizzChallenge && Object.keys(quizzChallenge.challenge).length !== 0) {
+      if (challenge && challenge.challenge && Object.keys(challenge.challenge).length !== 0) {
         Object.keys(challenge.challenge).forEach((chal) => {
           // eslint-disable-next-line
           delete challenge.challenge[chal];
