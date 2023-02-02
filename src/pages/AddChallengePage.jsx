@@ -53,7 +53,9 @@ function AddChallengePage({ challenge, setChallenge }) {
   }, [challenge]);
 
   useEffect(() => {
-    if (pictureChallenge && Object.keys(pictureChallenge.challenge).length !== 0) {
+    if (pictureChallenge && pictureChallenge.challenge
+      && Object.keys(pictureChallenge.challenge).length !== 0
+    ) {
       if (challenge && challenge.challenge) {
         Object.keys(challenge.challenge).forEach((chal) => {
           // eslint-disable-next-line
@@ -62,7 +64,9 @@ function AddChallengePage({ challenge, setChallenge }) {
       }
       setChallenge(pictureChallenge);
     }
-    if (questionChallenge && Object.keys(questionChallenge.challenge).length !== 0) {
+    if (questionChallenge && questionChallenge.challenge
+      && Object.keys(questionChallenge.challenge).length !== 0
+    ) {
       if (challenge && challenge.challenge) {
         Object.keys(challenge.challenge).forEach((chal) => {
           // eslint-disable-next-line
@@ -73,7 +77,9 @@ function AddChallengePage({ challenge, setChallenge }) {
       }
       setChallenge(questionChallenge);
     }
-    if (quizzChallenge && Object.keys(quizzChallenge.challenge).length !== 0) {
+    if (quizzChallenge && quizzChallenge.challenge
+      && Object.keys(quizzChallenge.challenge).length !== 0
+    ) {
       if (challenge && challenge.challenge && Object.keys(challenge.challenge).length !== 0) {
         Object.keys(challenge.challenge).forEach((chal) => {
           // eslint-disable-next-line
