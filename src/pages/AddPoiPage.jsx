@@ -399,7 +399,7 @@ function AddPoiPage() {
         }
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
         {
           update
             ? (
