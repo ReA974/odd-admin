@@ -9,7 +9,7 @@ import { getImage } from '../../services/groupQueries';
 function ChallengeAnswerCard({
   type, title, imageTitle, groupAnswer, badAnswers, goodAnswer, photoAnswer,
 }) {
-  const isCorrect = type === 'photo' ? groupAnswer : groupAnswer === goodAnswer;
+  const isCorrect = type === 'photo' ? groupAnswer === true : groupAnswer.toUpperCase() === goodAnswer.toUpperCase();
   const answers = type === 'multipleChoice' ? [goodAnswer, ...badAnswers] : [];
   const [imageTitleDl, setImageTitleDl] = useState(undefined);
   const [imageAnswer, setImageAnswer] = useState(undefined);

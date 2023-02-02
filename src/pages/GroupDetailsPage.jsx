@@ -72,7 +72,9 @@ function GroupDetailsPage() {
           answersCount += 1;
           if (poiData.challenge.type === 'photo' && visitData.challengeAnswer === true) {
             goodAnswersCount += 1;
-          } else if (poiData.challenge.goodAnswer === visitData.challengeAnswer) {
+          } else if (
+            poiData.challenge.goodAnswer.toUpperCase() === visitData.challengeAnswer.toUpperCase()
+          ) {
             goodAnswersCount += 1;
           }
         }

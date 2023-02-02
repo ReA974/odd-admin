@@ -22,7 +22,9 @@ function PoiPage() {
 
   if (POIListData === undefined) {
     return (
-      <CircularProgress />
+      <Box display="flex" justifyContent="center" sx={{ paddingTop: '50px' }}>
+        <CircularProgress />
+      </Box>
     );
   }
 
