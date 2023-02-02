@@ -124,6 +124,18 @@ function AddPoiPage() {
   const handleAddPoi = async () => {
     setErrorMessage('');
     const regex = /^(-?[1-8]?\d(?:\.\d{1,18})?|90(?:\.0{1,18})?)$/;
+    badAnswers.length = 0;
+    if (badAnswerOne !== undefined) {
+      badAnswers.push(badAnswerOne);
+    }
+    if (badAnswerTwo !== undefined) {
+      badAnswers.push(badAnswerTwo);
+    }
+    if (badAnswerThree !== undefined) {
+      badAnswers.push(badAnswerThree);
+    }
+    question.badAnswers = badAnswers;
+    setQuestion({ ...question });
     if (name === '') {
       setErrorName(true);
       setErrorMessage('Veuillez renseigner un nom de POI');
@@ -143,79 +155,125 @@ function AddPoiPage() {
     } else if (!regex.test(longitude)) {
       setErrorLongitude(true);
       setErrorMessage('Veuillez renseigner la longitude seulement avec des chiffres et un point');
-    } else if (question === undefined || (question && Object.keys(question).length === 0)) {
+    } else if (!question || Object.keys(question).length === 0) {
       setErrorMessage('Veuillez renseigner les champs associés à la question');
-    } else if (challenge === undefined || (challenge && Object.keys(challenge).length === 0)) {
+    } else if (!challenge
+      || (challenge.challenge && Object.keys(challenge.challenge).length === 0)
+      || (challenge && Object.keys(challenge).length === 0)
+    ) {
       setErrorMessage('Veuillez renseigner les champs associés au défi');
-    } else {
-      const geoPoint = new GeoPoint(Number(latitude), Number(longitude));
-      badAnswers.push(badAnswerOne);
-      badAnswers.push(badAnswerTwo);
-      badAnswers.push(badAnswerThree);
-      question.badAnswers = badAnswers;
-      setQuestion({ ...question });
-      let tempImg;
-      let tempUuid;
-      if (challenge && challenge.challenge) {
-        if (challenge.challenge.type && challenge.challenge.type === 'photo' && challenge.challenge.goodAnswer) {
-          if ((challengePicture && challenge.challenge.goodAnswer !== challengePicture)
-            || !challengePicture
-          ) {
-            tempImg = challenge.challenge.goodAnswer;
-            tempUuid = uuidv4();
-            challenge.challenge.goodAnswer = `CHALLENGE/${tempUuid}`;
-          }
-        }
-        if (challenge.challenge.image) {
-          if ((challengePicture && challenge.challenge.image !== challengePicture)
-            || !challengePicture
-          ) {
-            tempImg = challenge.challenge.image;
-            tempUuid = uuidv4();
-            challenge.challenge.image = `CHALLENGE/${tempUuid}`;
-          }
-        }
-      }
-      if (
-        challenge
-        && challenge.challenge
-        && (challenge.challenge.image || challenge.challenge.type === 'photo')
-        && tempImg
-        && tempUuid
-      ) {
-        saveImg(tempUuid, 'CHALLENGE', tempImg);
-      }
-      let result;
-      if (!update) {
-        result = await addPoi(
-          name,
-          description,
-          linkedOdd,
-          geoPoint,
-          question,
-          challenge.challenge,
-        );
-        navigate('/poi');
-      } else {
-        result = await updatePoi(
-          urlParams.id,
-          name,
-          description,
-          linkedOdd,
-          geoPoint,
-          question,
-          challenge.challenge,
-        );
-        navigate('/poi');
-      }
-      if (result && result.id) {
-        saveImg(result.id, 'POI', imgFile);
-      }
-      setErrorLongitude(false);
-      setErrorLatitude(false);
-      setErrorName(false);
-      setErrorMessage('');
     }
+    if (question) {
+      if (question.badAnswers.length !== 3) {
+        setErrorMessage('Veuillez renseigner toutes les mauvaises réponses associés à une question');
+      }
+      if (!question.title || question.title === '') {
+        setErrorMessage('Veuillez renseigner l\'intitulé associés à une question');
+      }
+      if (!question.goodAnswer || question.goodAnswer === '') {
+        setErrorMessage('Veuillez renseigner la bonne réponse associés à une question');
+      }
+    }
+    if (challenge) {
+      if (Object.keys(challenge.challenge).length === 0) {
+        setErrorMessage('Veuillez renseigner un type de défi');
+      } else if (!challenge.challenge.type || challenge.challenge.type === '') {
+        setErrorMessage('Veuillez renseigner un type de défi et les champs associés');
+      }
+      if (challenge.challenge.type && challenge.challenge.type === 'field') {
+        if (!challenge.challenge.title && challenge.challenge.title === '') {
+          setErrorMessage('Veuillez renseigner un intitulé de défi');
+        }
+        if (!challenge.challenge.goodAnswer || challenge.challenge.goodAnswer === '') {
+          setErrorMessage('Veuillez renseigner la bonne réponse du défi');
+        }
+        if (challenge.challenge.image && challenge.challenge.image === '') {
+          setErrorMessage('Veuillez renseigner l\'image du défi');
+        }
+      } else if (challenge.challenge.type && challenge.challenge.type === 'multipleChoice') {
+        if (!challenge.challenge.title || challenge.challenge.title === '') {
+          setErrorMessage('Veuillez renseigner un intitulé de défi');
+        }
+        if (!challenge.challenge.goodAnswer || challenge.challenge.goodAnswer === '') {
+          setErrorMessage('Veuillez renseigner la bonne réponse du défi');
+        }
+        if (!challenge.challenge.image || challenge.challenge.image === '') {
+          setErrorMessage('Veuillez renseigner l\'image du défi');
+        }
+        if (challenge.challenge.badAnswers.length !== 3) {
+          setErrorMessage('Veuillez renseigner toutes les mauvaises réponses associés à un défi');
+        }
+      } else if (challenge.challenge.type && challenge.challenge.type === 'photo') {
+        if (!challenge.challenge.title && challenge.challenge.title === '') {
+          setErrorMessage('Veuillez renseigner un intitulé de défi');
+        }
+        if (!challenge.challenge.goodAnswer && challenge.challenge.goodAnswer === '') {
+          setErrorMessage('Veuillez renseigner la bonne réponse du défi');
+        }
+      }
+    }
+    const geoPoint = new GeoPoint(Number(latitude), Number(longitude));
+    let tempImg;
+    let tempUuid;
+    if (challenge && challenge.challenge) {
+      if (challenge.challenge.type && challenge.challenge.type === 'photo' && challenge.challenge.goodAnswer) {
+        if ((challengePicture && challenge.challenge.goodAnswer !== challengePicture)
+          || !challengePicture
+        ) {
+          tempImg = challenge.challenge.goodAnswer;
+          tempUuid = uuidv4();
+          challenge.challenge.goodAnswer = `CHALLENGE/${tempUuid}`;
+        }
+      }
+      if (challenge.challenge.image) {
+        if ((challengePicture && challenge.challenge.image !== challengePicture)
+          || !challengePicture
+        ) {
+          tempImg = challenge.challenge.image;
+          tempUuid = uuidv4();
+          challenge.challenge.image = `CHALLENGE/${tempUuid}`;
+        }
+      }
+    }
+    if (
+      challenge
+      && challenge.challenge
+      && (challenge.challenge.image || challenge.challenge.type === 'photo')
+      && tempImg
+      && tempUuid
+    ) {
+      saveImg(tempUuid, 'CHALLENGE', tempImg);
+    }
+    let result;
+    if (!update) {
+      result = await addPoi(
+        name,
+        description,
+        linkedOdd,
+        geoPoint,
+        question,
+        challenge.challenge,
+      );
+      navigate('/poi');
+    } else {
+      result = await updatePoi(
+        urlParams.id,
+        name,
+        description,
+        linkedOdd,
+        geoPoint,
+        question,
+        challenge.challenge,
+      );
+      navigate('/poi');
+    }
+    if (result && result.id) {
+      saveImg(result.id, 'POI', imgFile);
+    }
+    setErrorLongitude(false);
+    setErrorLatitude(false);
+    setErrorName(false);
+    setErrorMessage('');
   };
 
   if (ODDListData === undefined) {

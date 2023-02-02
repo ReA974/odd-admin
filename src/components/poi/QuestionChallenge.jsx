@@ -20,7 +20,7 @@ function QuestionChallenge({ setChallenge, challenge }) {
   };
 
   useEffect(() => {
-    if (challenge) {
+    if (challenge && titleType === undefined) {
       if (challenge.image && challenge.title) {
         setTitleType('Les deux');
       }

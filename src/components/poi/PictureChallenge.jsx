@@ -18,7 +18,7 @@ function PictureChallenge({ setChallenge, challenge }) {
       <TextFieldProps
         label="Intitulé"
         value={challenge && challenge.title}
-        setValueComponent={(value) => setChallenge({ ...challenge, title: value })}
+        setValueComponent={(value) => setChallenge({ ...challenge, title: value, type: 'photo' })}
         width="50vw"
         minWidth="25vw"
         marginBottom="10px"
