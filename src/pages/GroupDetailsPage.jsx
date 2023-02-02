@@ -13,9 +13,9 @@ import ODDAnswerCard from '../components/group/ODDAnswerCard';
 
 function arrayEquals(a, b) {
   return Array.isArray(a)
-      && Array.isArray(b)
-      && a.length === b.length
-      && a.every((val, index) => val === b[index]);
+    && Array.isArray(b)
+    && a.length === b.length
+    && a.every((val, index) => val === b[index]);
 }
 
 function GroupDetailsPage() {
@@ -60,7 +60,7 @@ function GroupDetailsPage() {
             goodAnswersCount += 1;
           }
         }
-        if (visitData.challengeAnswer) {
+        if (visitData.challengeAnswer !== undefined) {
           formattedPoi = {
             ...formattedPoi,
             challenge: {
@@ -70,8 +70,10 @@ function GroupDetailsPage() {
             },
           };
           answersCount += 1;
-          if (poiData.challenge.type === 'photo' && visitData.challengeAnswer === true) {
-            goodAnswersCount += 1;
+          if (poiData.challenge.type === 'photo') {
+            if (visitData.challengeAnswer === true) {
+              goodAnswersCount += 1;
+            }
           } else if (
             poiData.challenge.goodAnswer.toUpperCase() === visitData.challengeAnswer.toUpperCase()
           ) {
@@ -127,11 +129,11 @@ function GroupDetailsPage() {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" sx={{ width: '100%' }}>
-      { group === undefined
+      {group === undefined
         && <CircularProgress />}
-      { group === null
+      {group === null
         && <Typography>Ce groupe n&apos;existe pas</Typography>}
-      { group && (
+      {group && (
         <>
           <IconButton sx={{ position: 'fixed', left: '10px', top: '80px' }} component={Link} to="/group">
             <ArrowBackIos sx={{ marginLeft: '7px' }} />
